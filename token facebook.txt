@@ -10,11 +10,3 @@ probandoWebHooks
 
 standalone.bat -Djboss.server.base.dir=D:\wildfly-11.0.0.Final\standaloneCP\ 
 
-Credenciales Facebook
-0999910156
-monito0503535320
-
-
-credenciales gmail
-componente.practico.uisrael@gmail.com
-monito0503535320
