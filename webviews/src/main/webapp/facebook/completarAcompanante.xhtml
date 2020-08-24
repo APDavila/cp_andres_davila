@@ -1,0 +1,133 @@
+<ui:composition template="/WEB-INF/templatePopUp/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="titulo">
+		Menú
+	</ui:define>
+	<ui:define name="content">
+	<h:form id="frPrincipal">
+			<div id="panel de arriba"
+				style="position: sticky;/* width: -webkit-fill-available; */z-index: 1000;top: 0;max-width: 100%;width: 100%;box-shadow: 0px 4px 3px rgba(0,0,0,.5);display: flex;">
+				<div style="width:30%;">
+				<a href="#{completarAcompananteController.linkMenu}"
+					style="text-decoration: none"> <p:toolbar
+						style="width:100%;text-align: -webkit-center;height:100%;">
+						<f:facet name="left">
+							<img src="https://lola.nuo.com.ec/images/hl_images/flecha_atras.png"
+								width="20%" height="2%" />
+							<h:outputText style="font-size:70%;font-weight:bold;"
+								value="&#160;Ver Menú" />
+						</f:facet>
+					</p:toolbar>
+				</a>
+				</div>
+				<div style="width:70%;">
+				<a href="#{completarAcompananteController.linkCarro}"
+					style="text-decoration: none"> <p:toolbar
+						style="width:100%;text-align: -webkit-center;">
+						<f:facet name="right">
+							<img src="https://lola.nuo.com.ec/images/hl_images/micarrito.png"
+								width="11%" height="4.5%" />
+							<h:outputText style="font-size:70%;font-weight:bold;"
+								value="&#160;Ver Carrito" />
+						</f:facet>
+					</p:toolbar>
+				</a>
+				</div>
+			</div>
+
+		
+		<b:container style="padding-left:0px;padding-right:0px;padding-top: 20%;">
+			<br></br>
+			<img src="#{completarAcompananteController.urlImagenProducto}"
+				style="margin-top: -25%;" width="100%" height="50%" />
+			
+				<p:growl id="msgs" showDetail="true" />
+				<p:panel id="pAcompanantes">
+					<p:dataTable style="width:100%;" value="">
+						<p:column headerText="">
+							<h:outputLabel style="font-size:80%;font-weight:bold;"
+								value="#{completarAcompananteController.nombreProducto}" />
+								<br></br>
+								<h:outputLabel style="font-size:70%;"
+								value="#{completarAcompananteController.detallesProducto}" />
+						</p:column>
+					</p:dataTable>
+					<p:dataTable id="dtPreguntas"
+						value="#{completarAcompananteController.listaPreguntas}" var="pre"
+						emptyMessage="" styleClass="tblDatos" style="width:100%;">
+						<p:column headerText="">
+							<p:accordionPanel>
+								<p:tab title="#{pre.mensaje}" aria-expanded="false"
+									style="font-size:70%;font-weight:bold;">
+									<table>
+										<tr>
+											<td
+												style="border: none; text-align: left; width: 100%; font-size: 70%;">
+												<p:selectOneRadio id="sorAcompanantes"
+													value="#{completarAcompananteController.al_idAcompananteProducto}"
+													layout="grid" columns="1">
+													<f:selectItems value="#{pre.listaAcompanante}" var="b"
+														itemLabel="$ #{b.precio}&#160;&#160;#{b.nombre}"
+														itemValue="#{b.idAcompananteProducto}" />
+													<f:ajax execute="sorAcompanantes" event="click"
+														listener="#{completarAcompananteController.seleccionandoAcompanante(pre.id)}" />
+												</p:selectOneRadio>
+											</td>
+										</tr>
+									</table>
+								</p:tab>
+							</p:accordionPanel>
+							<br></br>
+						</p:column>
+					</p:dataTable>
+					<br></br>
+					<p:dataTable id="dtCantidad" value="">
+						<br></br>
+						<p:column headerText="" style="text-align:center;font-size:70%">
+							<h:outputLabel value="Cantidad:" />
+							<br></br>
+							<p:commandButton id="cbDecrementar" value="-"
+								style="font-size:150%;font-weight:bold;"
+								action="#{completarAcompananteController.decrementarCantidad}"
+								update=":frPrincipal:dtCantidad" />
+							<h:outputText id="otCantidad"
+								style="font-size:150%;font-weight:bold;"
+								value="&#160;#{completarAcompananteController.cantidadProducto}&#160;" />
+							<p:commandButton id="cbIncrementar" value="+"
+								style="font-size:150%;font-weight:bold;"
+								action="#{completarAcompananteController.incrementarCantidad}"
+								update=":frPrincipal:dtCantidad" />
+						</p:column>
+					</p:dataTable>
+					<br></br>
+					<div style="text-align: right">
+						<p:commandButton id="cbAnadirCarrito" value="Añadir al carrito"
+							icon="ui-icon-plusthick"
+							action="#{completarAcompananteController.anadirCarrito}"
+							style="font-size:100%;font-weight:bold;"
+							update=":frPrincipal:msgs">
+						</p:commandButton>
+					</div>
+
+				</p:panel>
+				<p:ajaxStatus onstart="PF('statusDialog').show()"
+				onsuccess="PF('statusDialog').hide()" />
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false">
+				<p:graphicImage url="/images/ajax-loader.gif"
+				value="/images/ajax-loader.gif" name="/images/ajax-loader.gif" />
+			</p:dialog>
+		</b:container>
+		</h:form>
+	</ui:define>
+	<ui:define name="footer">
+		<p:panel>
+			<div style="text-align: center">Hola-Lola</div>
+		</p:panel>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,25 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+	          <a class="navbar-brand" href="#"><p:outputLabel value="#{menuWebController.ls_nombrePalicacion}" style="color:white !important;"></p:outputLabel> </a>
+	        </div>
+	        <div id="navbar" class="collapse navbar-collapse">
+	        
+		      
+	            <h:form class="navbar-form navbar-right">
+	                <p:menubar model="#{menuWebController.menuModel}"   />
+	            </h:form>
+	       
+        
+	          
+	        </div>
+        </div>
+    </nav>
+
+</ui:composition>

@@ -1,0 +1,228 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+
+	<ui:define name="titulo">Login</ui:define>
+
+
+	<ui:define name="content">
+		<ui:fragment rendered="#{loginController.conFbExtensions}">
+			<script>
+				(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) {
+						return;
+					}
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'Messenger'));
+
+				function closeView() {
+					MessengerExtensions.requestCloseBrowser(function success() {
+						console.log(success)
+					}, function error(err) {
+						console.log(err)
+					});
+				}
+			</script>
+		</ui:fragment>
+		<ui:fragment rendered="#{!loginController.conFbExtensions}">
+			<script>
+				function closeView() {
+					window.close();
+				}
+			</script>
+		</ui:fragment>
+
+		<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+			<f:facet name="default">
+
+			</f:facet>
+
+			<f:facet name="start">
+				 
+			</f:facet>
+
+			<f:facet name="complete">
+				 
+			</f:facet>
+		</p:ajaxStatus>
+
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage url="/images/ajaxloadingbar.gif"
+				value="/images/ajaxloadingbar.gif" name="/images/ajaxloadingbar.gif" />
+		</p:dialog>
+
+		<b:form id="formulario" horizontal="true" prependId="false"
+			autocomplete="off">
+			<p:growl id="msgs" />
+
+			<b:container>
+				<b:panel>
+				 <div style="overflow-y: auto; width: 100%;">
+				 
+				 <h:panelGroup rendered="#{loginController.mostrarFormulario}" style="width: 95%;">
+				 
+				 <p:panel id="loguin" header="Iniciar Sesión"  style="margin-bottom:20px" visible="#{loginController.ab_loguin}">
+				 
+						<b:inputText placeholder="E-mail" id="usuario" 
+							colMd="9" labelColMd="3" value="#{loginController.ls_usuario }">
+							<f:facet name="prepend">
+								<b:icon name="user" />
+							</f:facet>
+						</b:inputText>
+
+						<b:inputSecret id="clave" colMd="9" labelColMd="3" 
+						    placeholder="Contraseña"
+							value="#{loginController.ls_clave}" class="password" >
+							<f:facet name="prepend">
+								<b:iconAwesome name="key" />
+							</f:facet>
+						</b:inputSecret>
+
+						
+							<p:commandButton id="btnAceptar" value="Continuar"
+								look="primary btn-block"
+								actionListener="#{loginController.validarUsuario}" update="msgs"
+								styleClass="button ui-priority-primary"
+								style="border: 1px solid #1f89ce; color: #fff; background: #2399e5;" />
+
+						
+						<hr style="color: #0056b2; width: 95%;" />
+
+
+						<h:panelGrid columns="1" cellpadding="5" >
+							<p:commandLink type="button" value="Registrarse" 
+								actionListener="#{loginController.solicitarDatosRegistro}"
+							    update="msgs idRegistro loguin">
+							</p:commandLink>
+						</h:panelGrid>
+						
+					 
+						
+					</p:panel>
+
+				
+
+					<p:panel id="idRegistro" header="Registrarse" style="margin-bottom:20px" visible="#{!loginController.ab_loguin}">
+
+							<b:inputText placeholder="Nombre" id="usuarioReg"  colMd="9"
+								labelColMd="3" value="#{loginController.ls_usuarioReg}">
+								<f:facet name="prepend">
+									<b:icon name="user" />
+								</f:facet>
+							</b:inputText>
+							
+							<b:inputText placeholder="Apellido" id="apellido"
+								colMd="9" labelColMd="3" value="#{loginController.ls_apellido }">
+								<f:facet name="prepend">
+									<b:icon name="user" />
+								</f:facet>
+							</b:inputText>
+							
+							<b:inputSecret id="claveReg" colMd="9"  placeholder="Contraseña" labelColMd="3"
+								value="#{loginController.ls_claveReg}" class="password">
+								<f:facet name="prepend">
+									<b:iconAwesome name="key" />
+								</f:facet>
+							</b:inputSecret>
+
+							<b:inputSecret id="claveConfReg" placeholder="Confirmar Contraseña"  colMd="9" labelColMd="3"
+								value="#{loginController.ls_claveConf}" class="password">
+								<f:facet name="prepend">
+									<b:iconAwesome name="key" />
+								</f:facet>
+							</b:inputSecret>
+
+							<b:inputText placeholder="Cédula" id="identificacionReg"
+								colMd="9" labelColMd="3"
+								value="#{loginController.ls_identificacion}">
+								<f:facet name="prepend">
+									<b:icon name="modal-window" />
+								</f:facet>
+							</b:inputText>
+
+							<b:inputText placeholder="E-mail" id="emailReg" colMd="9"
+								type="email" labelColMd="3" value="#{loginController.ls_email}">
+								<f:facet name="prepend">
+									<b:icon name="envelope" />
+								</f:facet>
+							</b:inputText>
+
+							<b:selectOneMenu value="#{loginController.ciudad}" id="ciudadReg"
+								colMd="9" labelColMd="3">
+								<f:selectItems value="#{loginController.ciudades}"
+									var="slciudad" itemValue="#{slciudad.id}"
+									itemLabel="#{slciudad.nombre}" />
+								<f:facet name="prepend">
+									<b:icon name="home" />
+								</f:facet>
+							</b:selectOneMenu>
+
+
+							<hr style="color: #0056b2;" />
+
+							<div style="text-align: center;">
+
+								<p:commandButton value="Registrar"
+									styleClass="button"
+									actionListener="#{loginController.registrarUsuario}"
+									update="msgs idRegistro loguin"
+									style="border: 1px solid #1f89ce; color: #fff; background: #2399e5; margin-right: 20px;">
+									<p:confirm header="Confirmación"
+										message="Está seguro de procesar?" icon="ui-icon-alert" />
+								</p:commandButton>
+								
+								<p:commandButton value="Salir"
+									styleClass="button"
+									actionListener="#{loginController.regresarLoguin}"
+									update="msgs idRegistro loguin"
+									style="border: 1px solid #1f89ce; color: #fff; background: #2399e5;">
+								</p:commandButton>
+
+								<p:confirmDialog global="true" showEffect="fade"
+									hideEffect="fade">
+									<p:commandButton value="Si" type="button" 
+										styleClass="ui-confirmdialog-yes button" icon="ui-icon-check" update="idRegistro loguin" style="border: 1px solid #1f89ce; color: #fff; background: #2399e5;" />
+									<p:commandButton value="No" type="button"
+										styleClass="ui-confirmdialog-no button" icon="ui-icon-close" update="idRegistro loguin" style="border: 1px solid #1f89ce; color: #fff; background: #2399e5;"	 />
+								</p:confirmDialog>
+
+							</div>
+
+						</p:panel>
+						
+						
+
+						<script
+							src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js'></script>
+						<script
+							src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+						<script src="#{resource['js:validadorRuc.js']}"></script>
+						<script src="#{resource['js:customValidators.js']}"></script>
+
+					</h:panelGroup>
+
+					<h:panelGroup rendered="#{!loginController.mostrarFormulario}" style="width: 95%;">
+						Se produjo un error interno....
+						<b:button look="primary btn-block" onclick="closeView();" styleClass ="button"
+							value="Continuar"></b:button>
+					</h:panelGroup>
+				</div>
+				</b:panel>
+			</b:container>
+		</b:form>
+	</ui:define>
+
+</ui:composition>

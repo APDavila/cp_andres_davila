@@ -1,0 +1,171 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+	<ui:define name="head">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+
+		<link href='https://fonts.googleapis.com/css?family=Lato:400,700'
+			rel='stylesheet' type='text/css' />
+		<link rel="stylesheet" type="text/css"
+			href="jQuery-Seat-Charts/jquery.seat-charts.css" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	</ui:define>
+
+	<ui:define name="titulo">Número de puestos</ui:define>
+
+	<ui:define name="content">
+		<ui:fragment rendered="#{reservaController.conFbExtensions}">
+			<script>
+				(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) {
+						return;
+					}
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'Messenger'));
+
+				function closeView() {
+					MessengerExtensions.requestCloseBrowser(function success() {
+						console.log(success)
+					}, function error(err) {
+						console.log(err)
+					});
+				}
+			</script>
+		</ui:fragment>
+		<ui:fragment rendered="#{!reservaController.conFbExtensions}">
+			<script>
+				function closeView() {
+					window.close();
+				}
+			</script>
+		</ui:fragment>
+
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage url="/images/ajaxloadingbar.gif"
+				value="/images/ajaxloadingbar.gif" name="/images/ajaxloadingbar.gif" />
+		</p:dialog>
+
+		<b:form id="formulario" prependId="false">
+			<p:growl id="msgs" />
+			<b:container>
+			<div style="overflow-y: auto;">
+				<b:panel look="primary">
+					<h:panelGroup>
+						<b:row>
+							<b:column>
+								<div class="booking-details ui-fluid"
+									style="margin-left: 0px !important;">
+
+									<p:panelGrid columns="1"
+										columnClasses="ui-grid-col-10,ui-grid-col-10" layout="grid"
+										styleClass="ui-panelgrid-blank"
+										style="text-align: justify !important;">
+										<f:facet name="header">
+											<p:graphicImage url="#{reservaController.imagenPelicula}"
+												width="70%" />
+										</f:facet>
+										<h:outputText value="#{reservaController.informacionPelicula}"
+											style="text-align: justify !important;" />
+									</p:panelGrid>
+
+									<hr style="color: #0056b2;" />
+
+									<p:panelGrid columns="4"
+										styleClass="ui-panelgrid-blank"
+										rendered="#{reservaController.verClubBeneficios}"
+										>
+										<f:facet name="header">
+											<h:outputText value="Entradas Club de Beneficios" />
+										</f:facet>
+
+										<b:commandButton value="-" icon="ui-icon-minusthick"
+											styleClass="button"
+											style="font-size: x-large;"
+											actionListener="#{reservaController.restarCLB}"
+											update="inpCLB idPrecioCLB" />
+
+										<h:outputText id="inpCLB"
+											style="font-size: 90% !important; width: 40px; text-align: center; font-weight: bold !important; "
+											value="#{reservaController.clubBeneficios}" />
+
+										<b:commandButton value="+" icon="ui-icon-plusthick"
+											styleClass="button"
+											style="font-size: x-large;"
+											actionListener="#{reservaController.sumarCLB}"
+											update="inpCLB idPrecioCLB" />
+
+										<h:outputText id="idPrecioCLB"
+											style="font-size: 90% !important; width: 40px; text-align: center; font-weight: bold !important; "
+											value="x #{reservaController.precioCLB} = #{reservaController.precioTotalCLB}" />
+
+									</p:panelGrid>
+
+									<hr style="color: #0056b2;" />
+
+									<p:panelGrid columns="4" styleClass="ui-panelgrid-blank">
+										<f:facet name="header">
+											<h:outputText value=" Entradas General" />
+										</f:facet>
+
+										<b:commandButton value="-" styleClass="button"
+										    style="font-size: x-large;"
+											icon="ui-icon-minusthick"
+											actionListener="#{reservaController.restarGeneral}"
+											update="inpGeneral idPrecioGeneral" />
+
+										<h:outputText id="inpGeneral"
+											style="font-size: 90% !important; width: 40px; text-align: center; font-weight: bold !important; "
+											value="#{reservaController.general}" />
+
+										<b:commandButton value="+" icon="ui-icon-plusthick"
+										    style="font-size: x-large;"
+											styleClass="button"
+											actionListener="#{reservaController.sumarGeneral}"
+											update="inpGeneral idPrecioGeneral" />
+
+										<h:outputText id="idPrecioGeneral"
+											style="font-size: 90% !important; width: 40px; text-align: center; font-weight: bold !important; "
+											value="x #{reservaController.precioGeneral} = #{reservaController.precioTotalGeneral}" />
+
+
+									</p:panelGrid>
+
+									<div style="text-align: center;" class="ui-fluid">
+										<hr style="color: #0056b2;" />
+										<p:commandButton value="Siguiente" styleClass="button"
+											actionListener="#{reservaController.guardarDetallePedido}"
+											update="msgs">
+										</p:commandButton>
+
+									</div>
+
+								</div>
+
+							</b:column>
+						</b:row>
+
+
+						<script src="jQuery-Seat-Charts/jquery.seat-charts.min.js"></script>
+						<script src="jQuery-Seat-Charts/jquery.countdown.min.js"></script>
+					</h:panelGroup>
+				</b:panel>
+			</div>
+			</b:container>
+		</b:form>
+
+	</ui:define>
+</ui:composition>

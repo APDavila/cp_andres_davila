@@ -1,0 +1,364 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+	<ui:define name="head">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+
+		<link href='https://fonts.googleapis.com/css?family=Lato:400,700'
+			rel='stylesheet' type='text/css' />
+		<link rel="stylesheet" type="text/css"
+			href="jQuery-Seat-Charts/jquery.seat-charts.css" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	</ui:define>
+
+	<ui:define name="titulo">Escoge tus puestos</ui:define>
+
+	<ui:define name="content">
+		<ui:fragment rendered="#{cineController.conFbExtensions}">
+			<script>
+				(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) {
+						return;
+					}
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'Messenger'));
+			
+				function closeView() {
+					MessengerExtensions.requestCloseBrowser(function success() {
+						console.log(success)
+					}, function error(err) {
+						console.log(err)
+					});
+				}
+			</script>
+		</ui:fragment>
+		<ui:fragment rendered="#{!cineController.conFbExtensions}">
+			<script>
+				function closeView() {
+					window.close();
+				}
+			</script>
+		</ui:fragment>
+
+		<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+			<f:facet name="default">
+
+			</f:facet>
+
+			<f:facet name="start">
+				<h:outputText value="Procesando..." />
+			</f:facet>
+
+			<f:facet name="complete">
+				<h:outputText value="Proceso: Completado" />
+			</f:facet>
+		</p:ajaxStatus>
+
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage url="/images/ajaxloadingbar.gif"
+				value="/images/ajaxloadingbar.gif" name="/images/ajaxloadingbar.gif" />
+		</p:dialog>
+
+		<h:form id="formulario" prependId="false">
+			<p:growl id="msgs" />
+			<b:container>
+			<div style="overflow-y: auto;">
+				<b:panel look="primary">
+					<b:row>
+						<b:column>
+							<h:panelGroup id="mensajes"
+								rendered="#{cineController.mostrarMensajes}">
+								<div class="#{cineController.estiloMensaje}">
+									<h:outputText value="#{cineController.mensaje}" />
+								</div>
+							</h:panelGroup>
+						</b:column>
+					</b:row>
+
+					<h:panelGroup rendered="#{cineController.puedeSeleccionarPuestos}">
+						<b:row style="text-align:center">
+							<div id="legend"></div>
+							<b:column id="seat-map"
+								style="min-height: #{cineController.minHeight}px;">
+								<div>
+									<div class="front-indicator"
+										style="min-width: #{cineController.deviceWidth}px">Pantalla</div>
+								</div>
+
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column>
+								<div class="booking-details">
+									<h2>
+										<h:outputText value="#{cineController.informacionPelicula}" />
+									</h2>
+									<div>
+										Tienes <span id="tiempoRestante"></span> para completar tu
+										pedido
+									</div>
+									<h2>Detalles</h2>
+
+									<h3>
+										Tus puestos (<span id="counter">0</span> de
+										#{cineController.numeroPuestosSolicitados} ): <span
+											id="selected-seats"></span>
+									</h3>
+
+									<ui:repeat var="detallePedido"
+										value="#{cineController.pedido.detallePedidoSupercines}">
+										<div>#{detallePedido.tipoTicket} $
+											#{detallePedido.precio} x #{detallePedido.cantidad} :
+											#{detallePedido.valorTotal}</div>
+									</ui:repeat>
+									<div>
+										Total: <b> $<span id="total">#{cineController.valorPuestosSolicitados}</span></b>
+									</div>
+
+									<hr style="color: #0056b2;" />
+
+									<h:outputText style="text-align: justify !important; font-weight: bold !important; "
+										value="Si alguien mas va a retirar las entradas, por favor indícanos su nombre completo" />
+
+									<h:panelGrid columns="2"
+										style="text-align: center; margin-bottom:10px; border-collapse: separate; border-spacing: 10px 10px;"
+										cellpadding="10" cellspacing="1" layout="grid">
+
+										<p:selectBooleanCheckbox id="chxUsuario"
+											value="#{cineController.usuarioRetiraEntradas}">
+											<p:ajax event="change" update="chxNoUsuario" />
+										</p:selectBooleanCheckbox>
+
+										<h:outputText
+											style="text-align: justify !important; font-weight: bold !important; "
+											value="#{cineController.nombreUsrLoginJson}" />
+
+										<p:selectBooleanCheckbox id="chxNoUsuario"
+											value="#{cineController.usuarioNoRetiraEntradas}">
+											<p:ajax event="change" update="chxUsuario" />
+										</p:selectBooleanCheckbox>
+
+										<h:inputText id="nombreRetiro"
+											style="text-align: justify !important; font-weight: bold !important;"
+											value="#{cineController.quienRetira}" />
+										<p:watermark for="nombreRetiro" value="Nombre de quien retira" id="watermark4" />
+										
+										<h:inputText id="ciRetiro"
+											style="text-align: justify !important; font-weight: bold !important;"
+											value="#{cineController.CIQuienRetira}" />
+										<p:watermark for="ciRetiro" value="Identificación de quien retira" id="watermark3" />
+
+
+									</h:panelGrid>
+									
+									<hr style="color: #0056b2;" />
+									
+									<p:dialog header="Términos y Condiciones de la Orden" widgetVar="dlg3" 
+									        showEffect="explode" hideEffect="bounce" position="center center" height="200" >
+									   <table style="background-color: #f7f7f7; border-radius: 3px; width: 100%" >
+									        <tbody><tr>
+									            <td style="padding: 15px 0 0 0;">
+									                <span style="color: #00afff; font-size: 24px; padding: 20px; padding-bottom: 30px;padding-top: 30px;">Términos y Condiciones de la Orden</span>
+									                <hr/>
+									            </td>
+									        </tr>
+									        <tr>
+									            <td width="100%">
+									                <div style="overflow-y: auto; text-align: justify !important; padding: 0 20px; width: 100%">
+									             
+									                        Este sistema es exclusivamente para reserva de boletos para funciones de cintas cinematográficas.
+									                        <hr/>
+									                        Los boletos una vez reservados, estarán disponibles inmediatamente. El cliente puede acercarse al cine elegido en cualquier momento a retirar sus entradas. Cuando se haga efectivo el retiro de las mismas, inmediatamente se emitirá la factura electrónica hacia el cliente, quien expresamente da su consentimiento y aceptación hacia esta forma de emisión.
+									                         <hr/>
+									                        Para su seguridad Supercines S. A. y Corporación El Rosado S.A  podría limitar el número máximo de reservas que un cliente puede realizar durante un mismo día.  Los boletos pueden ser reservados para todas las salas de cine a nivel nacional.  La reserva de tickets está sujeta a aprobación del emisor de su tarjeta.  Los boletos están sujetos a distintas restricciones según el tipo de boleto reservado. Para mayor información la  confirmación de su reserva incluye un resumen de las restricciones que aplican para el tipo de boleto reservado.
+									                         <hr/>
+									                        La entrega de los boletos se hará en el mismo complejo de cine, el titular  de la tarjeta de crédito o la persona designada en el proceso de reserva, deberá ser la persona que retire los boletos presentando la cédula de identidad, carnet estudiantil o cualquier documento de identificación.  La información de registro  de los usuarios podrá ser guardada en nuestras bases de datos.
+									                        <hr/>
+									                        El sistema acepta como medios de pago: Tarjetas de crédito Visa y MasterCard.
+									                         <hr/>
+									                        Una vez reservado los boletos on line, no se aceptan devoluciones ni cambios. Si el titular de la tarjeta no se presenta en los plazos señalados anteriormente, no podrá solicitar el cambio de los boletos.
+									                         <hr/>
+									                        Políticas de Privacidad, Términos y Condiciones; éstos términos aplica a todos los usuarios y/o personas que de cualquier forma hagan uso y/o utilicen:
+									                         <hr/>i) la página de internet supercines.com
+									                         <hr/>ii) Cualquiera de las páginas vinculadas a la página supercines.com
+									                         <hr/>iii) Reservación de boletos a través de la página supercines.com
+									                         <hr/>iv) En general cualquier servicio, producto y/o promociones que se ofrezcan y/ provean en dichas páginas, salvo disposición expresa en específico en contrario en cada uno de dichos servicios.
+									                         <hr/>
+									                        Tanto Supercines como los Usuarios, al momento de hacer uso de cualquiera de los Servicios, acuerdan voluntariamente sujetarse a las Políticas de Privacidad, Términos y Condiciones aquí descritas, así como a cualquier otra disposición, requerimiento, lineamiento o similar, que sea de tiempo en tiempo establecida en los Sitios, directamente o a través de los vínculos que muestren dicha información.
+									                   <hr/>
+									                        Los Usuarios acceden libre y voluntariamente al Sitio, con el objeto de solicitar de Supercines. La prestación de servicios, sujetándose de igual forma libremente a las Políticas vigentes, así como a cualquier disposición que sea emitida por Supercines, directa o indirectamente, relacionada con los servicios.  Al acceder a este Sitio, el Usuario reconoce haber leído y entendido sus contenidos y manifiesta estar de acuerdo con los mismos. El contenido de esta página, así como sus actualizaciones, son propiedad exclusiva de Supercines  y se encuentran protegidos por las leyes de propiedad intelectual del Ecuador.
+									                        <hr/>
+									                        Cualquier uso, incluyendo los publicitarios, exhibición, ejecución o comercialización del contenido de este sitio, incluyendo las marcas o avisos comerciales, en alguna red de cómputo o página de Internet se encuentra estrictamente prohibido sin el previo consentimiento que conste por escrito de Supercines S.A.  Las marcas Supercines, Mucho Más que un Cine, así como todas y cada una de las marcas que forman parte de los productos y servicios englobados en el concepto comercialmente conocido como Supercines y sus diferentes diseños se encuentran debidamente registrados y licenciados a favor de Supercines y Corporación El Rosado S.A., por lo que su uso total o parcial está estrictamente prohibido y sujeto a las penas establecidas en las leyes aplicables.
+									                        <hr/>
+									                        <strong>Supercines</strong>, sus empresas subsidiarias, filiales o asociadas, se reservan el derecho de modificar, actualizar, total o parcialmente, la información aquí contenida cuando lo estime conveniente, en cualquier momento y sin previo aviso.
+									                         <hr/>
+									                        Supercines, sus empresas subsidiarias, filiales o asociadas, no se responsabilizan por daños o perjuicios derivados del acceso, uso o mala utilización de los contenidos de este sitio.
+									                         <hr/>
+									                        Supercines, sus empresas subsidiarias, filiales o asociadas, no asumen responsabilidad alguna que derive por causa de problemas técnicos que se pudieran producir en equipos informáticos que se utilicen durante la conexión a la red Internet, ya sea a través del presente portal o de otras páginas webs.
+									                         <hr/>
+									                        Supercines se reserva el derecho de hacer cambios a la página de Internet supercines.com, así como a realizar exclusiones o modificaciones a los Términos y Condiciones, en cualquier tiempo.  El Usuario acepta que las Políticas de Privacidad, Términos y Condiciones  ni el uso que realice del Servicio, crean entre Supercines S.A. y dicho Usuario una asociación, sociedad, relación laboral, agencia, comisión o cualquier similar.
+									                         <hr/>
+									                        Las operaciones que pueden realizarse a través de la página web de Supercines y/o sus empresas subsidiarias o afiliadas se regirán por los términos y condiciones establecidos por la legislación mercantil y por la Ley de Comercio Electrónico y por la Ley Orgánica de Defensa del Consumidor de la República del Ecuador.   Cualquier controversia que se derive de la aplicación de las mismas se someterá exclusivamente a lo dispuesto en la Ley de Arbitraje y Mediación, publicada en el Registro Oficial No.417, del 14 de Diciembre del 2006, para lo cual se obligan a buscar un acuerdo voluntario con la asistencia de un Mediador designado por la Cámara de Comercio de Guayaquil, renunciando las partes expresamente a cualquier otra jurisdicción que les pudiera corresponder por razón de su domicilio presente o futuro o por cualquier otra causa.
+									                         <hr/>
+									                        En caso de imposibilidad de acuerdo dictaminada por el Mediador, cualquiera de las partes podrá someter la controversia al Arbitraje Administrado y en Derecho de la Cámara de Comercio de Guayaquil de conformidad con los reglamentos de ésta.  El Tribunal Arbitral estará integrado por tres árbitros y estará facultado para que en la ejecución de medidas cautelares solicite el auxilio de los funcionarios públicos, judiciales, policiales y administrativos, sin que sea necesario recurrir a juez ordinario alguno. Tanto el acuerdo expresado en el Acta de Mediación como el Laudo Arbitral tienen el efecto de Sentencia Ejecutoriada y Cosa Juzgada y no admiten recurso alguno.
+									                   
+									                </div>
+									            </td>
+									        </tr>
+									    </tbody></table>
+									</p:dialog>
+									<h:panelGrid columns="2"
+										style="text-align: center; margin-bottom:10px; border-collapse: separate; border-spacing: 10px 10px;"
+										cellpadding="5" layout="grid">
+										<p:selectBooleanCheckbox
+											value="#{cineController.aceptarTerminos}" />
+
+										<p:commandLink value="He
+												leído y acepto los Términos y Condiciones del Servicio"  
+												style="text-align: justify !important;"
+												onclick="PF('dlg3').show();" /> 
+											
+									</h:panelGrid>
+
+									<hr style="color: #0056b2;" />
+
+									<h:inputHidden id="puestos"
+										value="#{cineController.pedido.puestosSeleccionados}"></h:inputHidden>
+									<b:commandButton value="Comprar" look="primary btn-block"
+										ajax="true" action="#{cineController.comprar}"
+										update="formulario" icon="ok"></b:commandButton>
+
+								</div>
+							</b:column>
+						</b:row>
+
+
+						<script src="jQuery-Seat-Charts/jquery.seat-charts.min.js"></script>
+						<script src="jQuery-Seat-Charts/jquery.countdown.min.js"></script>
+
+						<script>
+						//<![CDATA[
+				var firstSeatLabel = 1;
+				var puestos = '';
+				
+		
+				function armarPuestos() {
+					var $cart = $('#selected-seats'), $counter = $('#counter'), $formulario = $('#formulario'), sc = $('#seat-map').seatCharts(
+							{
+								map :  #{cineController.disposicionSala.puestos} ,
+								seats : {
+									e : {
+										classes : 'economy-class', //your custom CSS class
+										category : 'Normal'
+									}
+
+								},
+								naming : {
+									top : false,
+									rows : [ #{cineController.disposicionSala.filas} ]
+								},
+								legend : {
+									node : $('#legend'),
+									items : [ [ 'e', 'available', 'Disponible' ], [ 'e', 'unavailable', 'No Disponible' ],[ 'e', 'selected', 'Tus Puestos' ] ]
+								},
+								click : function() {
+									var numeroPuestosSeleccionados = sc.find('selected').length;
+									if (this.status() == 'available' && numeroPuestosSeleccionados < #{cineController.numeroPuestosSolicitados}) {
+										//let's create a new li which we'll add to the cart items
+										$(' <span>'+this.settings.label+' | </span>')
+											.attr('id', 'cart-item-'+this.settings.id)
+											.data('seatId', this.settings.id)
+											.appendTo($cart);
+
+										/*
+										 * Lets update the counter and total
+										 *
+										 * .find function will not find the current seat, because it will change its stauts only after return
+										 * 'selected'. This is why we have to add 1 to the length and the current seat price to the total.
+										 */
+
+										$counter.text(numeroPuestosSeleccionados + 1);
+
+										sc.status(this.settings.id, 'selected');
+										registrarPuestos(sc, this);
+
+										return 'selected';
+									} else if (this.status() == 'selected') {
+										//update the counter
+										$counter.text(sc.find('selected').length - 1);
+
+										//remove the item from our cart
+										$('#cart-item-' + this.settings.id).remove();
+
+										sc.status(this.settings.id, 'available');
+										registrarPuestos(sc, this);
+
+										//seat has been vacated
+										return 'available';
+									} else if (this.status() == 'unavailable') {
+										//seat has been already booked
+										return 'unavailable';
+									} else {
+										return this.style();
+									}
+								}
+							});
+
+						
+					//let's pretend some seats have already been booked
+					sc.get(#{cineController.puestosOcupados}).status('unavailable');
+
+				}
+				
+				$(document).ready(armarPuestos());
+		
+				function registrarPuestos(sc, nuevoPuesto) {
+					var puestos = '';
+		
+					sc.find('selected').each(function() {
+						puestos += this.settings.id + '|';
+					});
+		
+					$('#puestos').val(puestos);
+				}
+				
+				//]]>
+			</script>
+						<script type="text/javascript">
+				  $("#tiempoRestante")
+				  .countdown('#{cineController.fechaFin}', function(event) {
+				    $(this).text(
+				      event.strftime('%M:%S')
+				    );
+				  })
+				  .on('finish.countdown', function(event) {
+					  closeView();
+				});
+			</script>
+					</h:panelGroup>
+
+					<h:panelGroup rendered="#{!cineController.puedeSeleccionarPuestos}">
+						<b:button look="primary btn-block" onclick="closeView();"
+							value="Continuar"></b:button>
+					</h:panelGroup>
+
+				</b:panel>
+			</div>
+			</b:container>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

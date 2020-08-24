@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+	<title>Hola Lola</title>
+	<ui:insert name="head" />
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<link
+    href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300,700'
+    rel='stylesheet' type='text/css'></link>
+<link href="style/stylesala.css" type="text/css" rel='stylesheet' />
+<script type="text/javascript" src="js/salachat.js"></script>
+
+</h:head>
+
+<h:body styleClass="PaleBlueBG">
+	<audio id="audio">
+						<source src="audio/alarma.mp3" type="audio/mp3" />
+					</audio>
+	<div class="body_container">
+ 
+        <div id="header">
+            <h1 style="color: white; font: oblique bold 120% cursive">SALA DE CHAT HOLA LOLA</h1>
+        </div>
+ 
+ 		<h2 style="color: white; font: oblique bold 120% cursive">Salas de chat activas</h2>
+ 		<p class='notifications_count' style="color: white; font: oblique bold 120% cursive">
+             
+        </p>
+ 		
+ 		<div id="content"> 
+
+
+        <div id="message_container">
+ 
+            <ul id="messages">
+            </ul>
+ 
+ 
+            <div id="input_message_container">
+                
+            </div>
+ 			
+        </div>
+        
+        
+        <div id="chat_container">
+								<h:form id="formMensajes">
+
+									<p:dataTable id="mensajes" tableStyle="table-layout: auto;"
+										value="#{chatOperadorController.lMensajes}"
+										var="mensajes">
+
+										
+										<p:column headerText="Últimos mensajes de #{chatOperadorController.x}">
+								           <h:outputText value="#{mensajes.mensaje}" />
+								        </p:column>
+
+										
+
+
+									</p:dataTable>
+
+								</h:form>
+							
+
+        <div id="message_containerRoom" class="box_shadow">
+ 
+            <ul id="messagesRoom">
+            </ul>
+ 
+ 
+            <div id="input_message_container">
+                <form id="form_send_message" method="post" action="#">
+                    <input type="text" id="input_message"
+                        placeholder="Ingresa tu mensaje aquí..." /> <input type="submit"
+                        id="btn_send" onclick="send();" value="Enviar" />
+                    <div class="clear"></div>
+                                    </form>
+                
+            </div>
+            
+            <h:form id="formvar">
+            <h:inputHidden id="nombrevar" value="#{chatOperadorController.x}" />
+   				
+        			  <!--  <h:commandButton id="hh" onclick="#{chatOperadorController.obtenerUltimosMensajes()}" ajax="true" update="mensajes"/>-->
+        			  <p:commandLink id="obtenerUltimos" update="formMensajes:mensajes" actionListener="#{chatOperadorController.obtenerUltimosMensajes()}">
+        			<h:outputText value="Ajax Submit" style="display: none"/>
+    				</p:commandLink> 
+            </h:form>
+ 			
+        </div>
+ 		
+        </div>
+        
+        </div> 
+
+    </div>
+</h:body>
+
+</html>

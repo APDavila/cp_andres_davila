@@ -1,0 +1,137 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	<!-- EXAMPLE-SOURCE-START -->
+	<h:form id="myFormIdPrin">
+	<p:panel id="pnListo" header="Listo" rendered="#{procesaUrlExternaController.ab_listo}">
+		
+		
+			<h:panelGroup style="text-align: center;">
+						<b:button look="primary btn-block" onclick="closeView();" actionListener="#{procesaUrlExternaController.confirmarplacetopayInt}" value="Continuar"
+						   		 style="background-color: #008CBA; border-radius: 4px; font-size: large;"></b:button>
+			</h:panelGroup>
+			
+			
+			<script>
+					(function(d, s, id) {
+						var js, fjs = d.getElementsByTagName(s)[0];
+						if (d.getElementById(id)) {
+							return;
+						}
+						js = d.createElement(s);
+						js.id = id;
+						js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+						fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'Messenger'));
+				
+					function closeView() {
+						closeView+1();
+						MessengerExtensions.requestCloseBrowser(function success() {
+							console.log(success)
+						}, function error(err) {
+							console.log(err)
+						});
+					}
+			
+					function closeView1() {
+						window.close();
+					}
+				</script>
+	</p:panel>
+	
+	<p:panel id="pnPago" header="Procesa Pago" rendered="#{!procesaUrlExternaController.ab_listo}">
+	
+				<p:commandButton id="hdnBtn" actionListener="#{procesaUrlExternaController.confirmarplacetopayInt}" update=":myFormIdPrin:pnPago :myFormIdPrin:pnListo" style="display: none;"/>
+	
+				<ui:fragment rendered="#{!procesaUrlExternaController.ab_listo}">
+	
+					<script src="https://secure.placetopay.ec/redirection/lightbox.min.js"></script>
+					<script type="text/javascript">
+					
+					(function(d, s, id) {
+						var js, fjs = d.getElementsByTagName(s)[0];
+						if (d.getElementById(id)) {
+							return;
+						}
+						js = d.createElement(s);
+						js.id = id;
+						js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+						fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'Messenger'));
+				
+					function closeView() {
+						closeView1();
+						MessengerExtensions.requestCloseBrowser(function success() {
+							console.log(success)
+						}, function error(err) {
+							console.log(err)
+						});
+					}
+			
+					function closeView1() {
+						window.close();
+					}
+	
+						function myFunction() {
+			
+								P.on('response', function(data) {
+									        try {
+													var str = JSON.stringify(data,
+															null, 2);
+													
+													/*alert(str);
+													
+													var n = str.toUpperCase().includes(
+															"APPROVED")
+															|| str.toLowerCase()
+																	.includes(
+																			"aprobada");
+		
+													if (n) {*/
+														 
+														try
+														{
+												        	document.getElementById('myFormIdPrin:hdnBtn').click(); 
+														}
+												        catch(err1) {
+												        	
+												        }
+												        
+												        closeView();
+													/*}*/											
+									          }
+									          catch(err) {
+									        
+									          }
+												});
+									P.init("#{procesaUrlExternaController.urlExterna}");
+						}
+	
+						myFunction();
+						
+					</script>
+			  </ui:fragment>
+	
+	</p:panel>
+
+	<h:outputStylesheet library="css" name="global.css" />
+
+	<h:outputStylesheet id="layoutCSS">
+    body {
+        margin: 4px !important;
+    }
+    
+    /* masks are usually transparent, but we make them visible here */
+    .ui-layout-mask {
+        background:	#C00 !important;
+        opacity:	.20 !important;
+        filter:		alpha(opacity=20) !important;
+    }    
+    </h:outputStylesheet>
+    </h:form>
+	<!-- EXAMPLE-SOURCE-END -->
+</ui:composition>

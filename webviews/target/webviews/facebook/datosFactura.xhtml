@@ -1,0 +1,319 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+	<ui:define name="titulo">Datos para tu factura</ui:define>
+
+
+	<ui:define name="content">
+		<ui:fragment rendered="#{datosFacturaController.conFbExtensions}">
+			<script>
+				(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) {
+						return;
+					}
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'Messenger'));
+
+				function closeView() {
+					MessengerExtensions.requestCloseBrowser(function success() {
+						console.log(success)
+					}, function error(err) {
+						console.log(err)
+					});
+				}
+			</script>
+		</ui:fragment>
+		<ui:fragment rendered="#{!datosFacturaController.conFbExtensions}">
+			<script>
+				function closeView() {
+					window.close();
+				}
+			</script>
+		</ui:fragment>
+
+		<b:form id="formulario" horizontal="true" prependId="false">
+			<b:container>
+				<b:panel look="primary">
+					<h:panelGroup
+						rendered="#{datosFacturaController.mostrarFormulario}">
+
+						<b:selectOneMenu id="tipoIdentificacion"
+							label="Tipo de Identificacion" colMd="9" labelColMd="3"
+							value="#{datosFacturaController.datoFactura.tipoIdentificacion}"
+							valueChangeListener="#{datosFacturaController.checkSelectedVal}">
+							<f:facet name="prepend">
+								<b:icon name="list" />
+							</f:facet>
+							<f:selectItem itemLabel="- Seleccione -" itemValue=""></f:selectItem>
+							<f:selectItem itemLabel="CEDULA" itemValue="C"></f:selectItem>
+							<f:selectItem itemLabel="RUC" itemValue="R"></f:selectItem>
+							<f:selectItem itemLabel="PASAPORTE" itemValue="P"></f:selectItem>
+							<f:selectItem itemLabel="RUC PERSONA NATURAL" itemValue="N"></f:selectItem>
+							<f:ajax event="click" execute="@this" />  
+						</b:selectOneMenu>
+						
+						<b:inputText placeholder="Numero de RUC/Cedula/Pasaporte"
+							label="Numero de Identificacion" id="numeroIdentificacion"
+							colMd="9" labelColMd="3"
+							value="#{datosFacturaController.datoFactura.numeroIdentificacion}">
+							<f:facet name="prepend">
+								<b:icon name="credit-card" />
+							</f:facet>
+						</b:inputText>
+						
+						<b:label id="lblnombres" 
+							value="Nombres" style="font-weight:bold !important; color: black !important; background-color: transparent !important; font-size: 100% !important; padding: 0 !important;" class="control-label"/>
+						 <br/>
+						
+						<b:inputText placeholder="Nombres"  id="nombres"
+							colMd="9" labelColMd="3"
+							value="#{datosFacturaController.nombres}">
+							<f:facet name="prepend">
+								<b:icon name="user" />
+							</f:facet>
+						</b:inputText>
+
+						<b:inputText placeholder="Apellidos" label="Apellidos"
+							id="apellidos" colMd="9" labelColMd="3"
+							value="#{datosFacturaController.apellidos}"
+							>
+							<f:facet name="prepend">
+								<b:icon name="user" />
+							</f:facet>
+						</b:inputText>
+
+
+						
+
+
+						<b:inputText placeholder="Correo electronico"
+							label="Correo electronico" id="email" colMd="9" labelColMd="3"
+							value="#{datosFacturaController.datoFactura.email}">
+							<f:facet name="prepend">
+								<b:icon name="envelope" />
+							</f:facet>
+						</b:inputText>
+
+
+
+						
+
+						<b:inputText placeholder="Telefono" label="Telefono" id="telefono"
+							colMd="9" labelColMd="3"
+							value="#{datosFacturaController.datoFactura.telefono}">
+							<f:facet name="prepend">
+								<b:icon name="earphone" />
+							</f:facet>
+						</b:inputText>
+
+						<b:inputText placeholder="Celular" label="Celular" id="celular"
+							colMd="9" labelColMd="3"
+							value="#{datosFacturaController.datoFactura.celular}">
+							<f:facet name="prepend">
+								<b:icon name="earphone" />
+							</f:facet>
+						</b:inputText>
+
+						<b:inputTextarea placeholder="Direccion" label="Direccion"
+							id="direccion" colMd="9" labelColMd="3"
+							value="#{datosFacturaController.datoFactura.direccion}" rows="3">
+							<f:facet name="prepend">
+								<b:icon name="home" />
+							</f:facet>
+						</b:inputTextarea>
+
+						<b:selectOneMenu id="esPrincipal"
+							label="Predeterminado para Factura?" colMd="9" labelColMd="3"
+							value="#{datosFacturaController.predeterminadoFactura}">
+							<f:facet name="prepend">
+								<b:icon name="list" />
+							</f:facet>
+							<f:selectItem itemLabel="- Seleccione -" itemValue=""></f:selectItem>
+							<f:selectItem itemLabel="Si" itemValue="true"></f:selectItem>
+							<f:selectItem itemLabel="No" itemValue="false"></f:selectItem>
+						</b:selectOneMenu>
+
+						<b:commandButton id="btnAceptar" value="Guardar" ajax="true"
+							process="@form" look="primary btn-block"
+							onclick="if (!esFormularioValido()) return false; ajax:datosFacturaController.guardar();"
+							update="formulario" icon="floppy-disk" />
+
+
+						<script
+							src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js'></script>
+						<script
+							src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+						<script src="#{resource['js:validadorRuc.js']}"></script>
+						<script src="#{resource['js:customValidators.js']}"></script>
+						
+						<script type="text/javascript">
+							$(document)
+									.ready(
+											function() {
+												
+												try
+												{
+							
+													var select = document.getElementById('tipoIdentificacionInner');
+													select.addEventListener('change',
+													  function(){
+										 
+													    var selectedOption = this.options[select.selectedIndex];
+													    //console.log(selectedOption.value + ': ' + selectedOption.text);
+													    var str = selectedOption.text;
+													    if(str == 'RUC' || str == 'R')
+														{
+													    	document.getElementById("input_nombres").placeholder = "Razón Social";
+													    	document.getElementById("lblnombres").innerHTML = "Razón Social";
+													    	
+													    	document.getElementById("apellidos").style.display = "none";
+													    
+													    }
+													    else
+													    {
+														    if(str == 'CEDULA' || str == 'RUC PERSONA NATURAL' || str == 'PASAPORTE' || str == 'C' || str == 'N' || str == 'P' )
+															{
+														    	document.getElementById("input_nombres").placeholder = "Nombres";
+														    	document.getElementById("lblnombres").innerHTML = "Nombres";
+														    	document.getElementById("apellidos").style.display = "grid";														     
+														    }
+													    }
+													    
+													    
+													    
+													    if(str == 'RUC' || str == 'R')
+														{
+													    	document.getElementById("input_nombres").label = "Razón Social";
+													    }
+													    else
+													    {
+														    if(str == 'CEDULA' || str == 'RUC PERSONA NATURAL' || str == 'PASAPORTE' || str == 'C' || str == 'N' || str == 'P' )
+															{
+														    	document.getElementById("input_nombres").label = "Tus Nombres";
+														    }
+													    }
+													    
+													  });
+												}
+												catch(err) 
+												{
+													
+												}
+												
+												
+												$('#formulario')
+														.bootstrapValidator(
+																{
+
+																	message : 'El valor ingresado es invalido',
+																	fields : {
+																		input_email : {
+																			validators : {
+																				notEmpty : {
+																					message : 'Correo electronico es requerido'
+																				},
+																				emailAddress : {
+																					message : 'Correo electronico invalido'
+																				}
+																			}
+																		},
+																		tipoIdentificacionInner : {
+																			validators : {
+																				notEmpty : {
+																					message : 'Tipo de Identificacion es requerido'
+																				},
+																				tipoDocumento : {
+																					field : 'input_numeroIdentificacion',
+																					message : 'Tipo de identificacion no coincide con valor ingresado'
+																				}
+
+																			}
+																		},
+																		input_numeroIdentificacion : {
+																			validators : {
+																				notEmpty : {
+																					message : 'Numero de Cedula/RUC/Pasaporte es requerido'
+																				},
+																				numeroDocumento : {
+																					field : 'tipoIdentificacionInner',
+																					message : 'Numero de Identificacion no coincide con tipo de documento'
+																				}
+																			}
+																		},
+																		input_nombres : {
+																			validators : {
+																				notEmpty : {
+																					message : 'Nombres y Apellidos son requeridos'
+																				}
+																			}
+																		},
+																		
+																		input_telefono : {
+																			validators : {
+																				notEmpty : {
+																					message : 'Telefono fijo es requerido (9 dig)'
+																				},
+																				regexp : {
+																					regexp : /^\d{9}$/i,
+																					message : 'Telefono invalido'
+																				}
+																			}
+																		},
+																		input_celular : {
+																			validators : {
+																				notEmpty : {
+																					message : 'Celular requerido'
+																				},
+																				regexp : {
+																					regexp : /^\d{10}$/i,
+																					message : 'Numero Celular invalido'
+																				}
+																			}
+																		},
+																		input_direccion : {
+																			validators : {
+																				notEmpty : {
+																					message : 'Direccion requerido'
+																				},
+																				stringLength : {
+																					min : 0,
+																					max : 200,
+																					message : 'Maximo 200 caracteres'
+																				}
+																			}
+																		}
+																	}
+																// termina fields
+																}) // termina bootstrp validator
+											});// termina rmina ready
+
+							function esFormularioValido() {
+								var validator = $('#formulario').data(
+										'bootstrapValidator');
+								validator.validate();
+								return (validator.isValid());
+							}
+						</script>
+					</h:panelGroup>
+
+					<h:panelGroup
+						rendered="#{!datosFacturaController.mostrarFormulario}">
+						<b:messages></b:messages>
+						<b:button look="primary btn-block" onclick="closeView();"
+							value="Continuar"></b:button>
+					</h:panelGroup>
+				</b:panel>
+			</b:container>
+		</b:form>
+	</ui:define>
+
+</ui:composition>

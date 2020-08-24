@@ -1,0 +1,115 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.holalola</groupId>
+  <artifactId>holalola_data_model</artifactId>
+  <version>1.0</version>
+  <name>holalola_data_model</name>
+  <packaging>jar</packaging>
+  
+  <dependencies>
+  
+		  <dependency>
+		    <groupId>com.fasterxml</groupId>
+		    <artifactId>jackson-xml-databind</artifactId>
+		    <version>0.6.2</version>
+		</dependency>
+  
+  
+  		<dependency>
+		    <groupId>com.squareup.okhttp3</groupId>
+		    <artifactId>okhttp</artifactId>
+		    <version>3.4.1</version>
+		</dependency>
+		
+		<dependency>
+		   <groupId>org.json</groupId>
+		   <artifactId>org.json</artifactId>
+		   <version>chargebee-1.0</version>
+		</dependency>
+ 
+	    <dependency>
+	        <groupId>com.google.zxing</groupId>
+	        <artifactId>core</artifactId>
+	        <version>3.2.1</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>com.google.zxing</groupId>
+	        <artifactId>javase</artifactId>
+	        <version>3.2.1</version>
+	    </dependency>
+ 
+  
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-rs-client</artifactId>
+			<version>3.1.10</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+		  <groupId>org.glassfish</groupId>
+		  <artifactId>javax.json</artifactId>
+		  <version>1.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.9</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.holalola</groupId>
+			<artifactId>facebook-api</artifactId>
+			<version>1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.maps</groupId>
+			<artifactId>google-maps-services</artifactId>
+			<version>0.1.20</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsYVh4jkgxmtOwsg7IkrjmXtQxHQMQik4">
+			
+		</script>
+
+		<script type="text/javascript">
+		// <![CDATA[
+			function handleAjaxRequest(xhr, status, args) {
+				try {
+					var xmlDoc = xhr.responseXML;
+					changes = xmlDoc.getElementsByTagName('changes');
+					errorNodes = xmlDoc.getElementsByTagName('error-name');
+					if (errorNodes.length == 0 && changes[0].childNodes.length > 1)
+						return;
+					else {
+						location.replace("#{request.contextPath}/facebook/chat/chat.jsf")
+					}
+					//errorName = errorNodes[0].childNodes[0].nodeValue;
+					//if (errorName.indexOf('ViewExpiredException') > -1 || changes[0].childNodes.length == 1) {
+					//	alert('Es necesario recargar la pagina');
+					//	window.location.reload(true);
+					//}
+
+				} catch (err) {
+					console.log('handleAjaxRequest: ' + err)
+				}
+			}
+			// ]]>
+		</script>
+	</f:facet>
+	<title>Chat</title>
+
+	<ui:insert name="head"></ui:insert>
+</h:head>
+
+
+<h:body styleClass="YellowTopbar PaleBlueBG">
+
+	<ui:include src="topbar.xhtml" />
+
+	<div id="layout-container">
+		<div id="layout-container-row">
+
+			<!-- PORTLETS COVER -->
+			<div id="layout-portlets-cover">
+						<ui:insert name="content">Contenido de la pagina</ui:insert>
+			</div>
+
+		</div>
+	</div>
+
+
+	<h:outputStylesheet name="css/core-layout.css" library="venture-layout" />
+	<h:outputStylesheet name="css/animate.css" library="venture-layout" />
+	<h:outputStylesheet name="css/nanoscroller.css" library="venture-layout" />
+	<h:outputStylesheet name="css/venture-font.css" library="venture-layout" />
+	<h:outputStylesheet name="css/font-awesome.css" library="venture-layout" />
+	<h:outputStylesheet name="css/venture-layout.css" library="venture-layout" />
+	<h:outputStylesheet library="css" name="estilos.css" />
+
+	<h:outputScript name="js/nanoscroller.js" library="venture-layout" />
+	<h:outputScript name="js/layout.js" library="venture-layout" />
+
+</h:body>
+</html>
+
+

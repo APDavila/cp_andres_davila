@@ -1,0 +1,237 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:b="http://bootsfaces.net/ui">
+
+	<ui:define name="head">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+
+		<link href='https://fonts.googleapis.com/css?family=Lato:400,700'
+			rel='stylesheet' type='text/css' />
+		<link rel="stylesheet" type="text/css"
+			href="jQuery-Seat-Charts/jquery.seat-charts.css" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	</ui:define>
+
+	<ui:define name="titulo">Procesar Pago</ui:define>
+
+	<ui:define name="content">		
+	
+			<ui:fragment>
+			<script>
+				(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) {
+						return;
+					}
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'Messenger'));
+			
+				function closeView() {
+					MessengerExtensions.requestCloseBrowser(function success() {
+						console.log(success)
+					}, function error(err) {
+						console.log(err)
+					});
+				}
+			</script>
+		</ui:fragment>
+	
+	
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage url="/images/ajaxloadingbar.gif"
+				value="/images/ajaxloadingbar.gif" name="/images/ajaxloadingbar.gif" />
+		</p:dialog>
+
+		<h:form id="formulario" prependId="false">
+			<p:growl id="msgs" life="10000"/>
+			<b:container>
+			<div style="overflow-y: auto;">
+				<b:panel look="primary">
+					<h:panelGroup>
+						<b:row>
+							<b:column>
+								<div class="booking-details ui-fluid"
+									style="margin-left: 0px !important;  ">
+
+									<h:panelGrid id="pnGrid" columns="1" rendered="#{pagoPayPhoneController.ab_verPago}"
+										border = "0"
+      									cellpadding = "10" cellspacing = "1" 
+      									style="border-collapse: separate !important;  border-spacing:  5px !important;"
+										styleClass="ui-panelgrid-blank">
+										<f:facet name="header">
+											<h:outputText value="Procesar Pago" />
+										</f:facet>
+										
+										 
+										<b:selectOneMenu id="somTarjetas" label="Tarjeta" value="#{pagoPayPhoneController.tarjeta}" update="intTarjeta inpCVV inpMesExpiracion inpAnioExpiracion bntDejarDeRecordar"
+										    rendered="#{pagoPayPhoneController.ab_verComboPagos}" >
+										  
+							                <f:selectItem itemLabel="Nueva Tarjeta" itemValue="" noSelectionOption="true" />
+							                <f:selectItems value="#{pagoPayPhoneController.tarjetas}" />
+							                <f:facet name="prepend">
+												<b:icon name="credit-card" />
+											</f:facet>
+										</b:selectOneMenu>
+										
+										 
+										<p:commandButton id="bntDejarDeRecordar" value="Dejar de Recordar"
+										    rendered="#{pagoPayPhoneController.ab_verComboPagos}"
+											look="primary btn-block"  ajax="false" 
+											actionListener="#{pagoPayPhoneController.dejarDeRecordar}" update="@form msgs somTarjetas"
+											styleClass="button ui-priority-primary"
+											disabled="#{pagoPayPhoneController.ab_ingresaTarjeta}"
+											style="border: 1px solid #1f89ce; color: #fff; background: #2399e5; width: 70% !important; left: 17% !important;" />
+										 
+							            <!-- <h:outputText value="" rendered="#{pagoPayPhoneController.ab_verComboPagos}" /> -->
+							            
+							            <b:inputText id="intTarjeta" label="Tarjeta"  style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" autocomplete="off" 
+							                rendered="#{pagoPayPhoneController.ab_ingresaTarjeta}"
+											value="#{pagoPayPhoneController.tarjetaEscrita}" maxlength="19" onkeypress="if(event.which &lt; 48 || event.which &gt; 57 ) if(event.which != 8) return false;"  >
+											<f:facet name="prepend">
+												<b:icon name="credit-card" />
+											</f:facet>
+										</b:inputText> 
+										<p:watermark for="intTarjeta" value="1234 5678 9012 3456" id="watermark2" />
+										
+							            <b:inputText id="inpCVV"  label="CVV" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" 
+											value="#{pagoPayPhoneController.ls_cvv}" maxlength="5" autocomplete="off" 
+											rendered="#{pagoPayPhoneController.ab_ingresaTarjeta}">
+											<f:facet name="prepend">
+												<b:icon name="credit-card" />
+											</f:facet>
+										</b:inputText> 
+										<p:watermark for="inpCVV" value="CVV" id="watermark3" />
+										 
+							            <b:inputText id="inpMesExpiracion" label="Mes (01-12)" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" 
+											value="#{pagoPayPhoneController.la_mes}"  maxlength="2" autocomplete="off"
+											rendered="#{pagoPayPhoneController.ab_ingresaTarjeta}">
+											<f:facet name="prepend">
+												<b:icon name="calendar" />
+											</f:facet>
+										</b:inputText> 
+										<p:watermark for="inpMesExpiracion" value="01-12" id="wm_mes" />
+										
+								 
+							            <b:inputText id="inpAnioExpiracion" label="Año (2019)" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" 
+											value="#{pagoPayPhoneController.la_anio}" maxlength="4" autocomplete="off" 
+											rendered="#{pagoPayPhoneController.ab_ingresaTarjeta}">
+											<f:facet name="prepend">
+												<b:icon name="calendar" />
+											</f:facet>
+										</b:inputText> 
+										<p:watermark for="inpAnioExpiracion" value="2019" id="wm_anio" />
+										
+									 
+							            <b:inputText id="intemailTarjeta" label="E-mail" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" autocomplete="off" 
+											value="#{pagoPayPhoneController.email}" maxlength="100">
+											<f:facet name="prepend">
+												<b:icon name="envelope" />
+											</f:facet>
+										</b:inputText> 
+										<p:watermark for="intemailTarjeta" value="ejemplo@hotmail.com" id="watermark23" />
+										
+									 
+										<b:inputText placeholder="Celular" label="Celular" id="celular" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" autocomplete="off" 
+											value="#{pagoPayPhoneController.celular}" maxlength="20">
+											<f:facet name="prepend">
+												<b:icon name="phone" />
+											</f:facet>
+										</b:inputText> 	
+										<p:watermark for="intemailTarjeta" value="0974512450" id="wmCelular" />
+															
+										<p:selectBooleanCheckbox style="float: right; !important;"
+											value="#{pagoPayPhoneController.ab_guardaTarjeta}" />
+										<h:outputText value="¿Quieres que guardemos este medio de pago para que no tengas que ingresarlo nuevamente?"/>
+										<h:outputText value=""/>
+										
+									</h:panelGrid>
+
+
+									<div style="text-align: center;" class="ui-fluid">
+										<hr style="color:white ;" />
+																			
+										<p:commandButton id="bntGuardar" value="Procesar"
+												look="primary btn-block"
+												actionListener="#{pagoPayPhoneController.procesarPago}" update="@form bntSalir1 msgs pnGrid bntGuardar"
+												rendered="#{pagoPayPhoneController.ab_verPago}"
+												styleClass="button ui-priority-primary"
+												style="border: 1px solid #1f89ce; color: #fff; background: #2399e5;" />
+
+										<h:outputText id="lblError" value="#{pagoPayPhoneController.ls_error}" rendered="#{pagoPayPhoneController.ab_noVerPago}" />
+										<hr style="color:white ;" />
+										<h:commandButton id="bntSalir1" value="Listo" styleClass="button"  rendered="#{pagoPayPhoneController.ab_noVerPago}"
+											onclick="closeView();">
+										</h:commandButton>
+
+									</div>
+
+								</div>
+
+							</b:column>
+						</b:row>
+
+
+						<script src="jQuery-Seat-Charts/jquery.seat-charts.min.js"></script>
+						<script src="jQuery-Seat-Charts/jquery.countdown.min.js"></script>
+						
+						<script type="text/javascript">
+						//<![CDATA[
+							$(document).ready(function() {
+								try
+								{
+			
+									var select = document.getElementById('somTarjetasInner');
+									select.addEventListener('change',
+									  function(){
+						 
+									    var selectedOption = this.options[select.selectedIndex];
+									    //console.log(selectedOption.value + ': ' + selectedOption.text);
+									    var str = selectedOption.text;
+									    if(str != 'Nueva Tarjeta')
+										{
+									    	document.getElementById("intTarjeta").style.display = "none";
+									    	document.getElementById("inpCVV").style.display = "none";
+									    	document.getElementById("inpMesExpiracion").style.display = "none";
+									    	document.getElementById("inpAnioExpiracion").style.display = "none";
+									     
+									    	
+									    
+									    }
+									    else
+									    {
+									    	document.getElementById("intTarjeta").style.display = "grid";
+									    	document.getElementById("inpCVV").style.display = "grid";
+									    	document.getElementById("inpMesExpiracion").style.display = "grid";
+									    	document.getElementById("inpAnioExpiracion").style.display = "grid";
+									     
+									    }									    
+									  });
+								}
+								catch(err) 
+								{
+									 
+								}
+							});
+							//]]>
+							</script>
+								
+					</h:panelGroup>
+				</b:panel>
+			</div>
+			</b:container>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,189 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+	<ui:define name="titulo">Procesar Entradas</ui:define>
+
+	<ui:define name="content">
+	
+	    <ui:fragment>
+	    
+	    <script>
+		//<![CDATA[
+	
+		function PrintImage(url) {
+			try {
+				   url = window.open(document.getElementById("gi_url").src);
+				   url.onload = function () { url.print(); }
+				   url.onbeforeunload = setTimeout(function () { url.close(); },100);
+				   url.onafterprint = setTimeout(function () { url.close(); },200);
+			} catch (err) {
+                url = '';
+                alert(err.Message);
+            }
+		}	//]]>	
+	</script>
+	
+			<script>
+			(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) {
+					return;
+				}
+				js = d.createElement(s);
+				js.id = id;
+				js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'Messenger'));
+		
+			function closeView() {
+				closeView1();
+				MessengerExtensions.requestCloseBrowser(function success() {
+					//console.log(success)
+				}, function error(err) {
+					//console.log(err)
+				});
+			}
+	
+			function closeView1() {
+				try
+				{
+					window.close();
+				}
+				catch(err)
+				{
+					
+				}
+			}
+					
+		    function ReiniciarFoco(){
+
+		       document.getElementById("intCIDenoTarjeta").focus();
+		       document.getElementById("intCIDenoTarjeta").focus();
+
+		      }
+			</script>
+		</ui:fragment>
+		
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage url="/images/ajaxloadingbar.gif"
+				value="/images/ajaxloadingbar.gif" name="/images/ajaxloadingbar.gif" />
+		</p:dialog>
+
+		<h:form id="formulario" prependId="false" style="font-size: small !important;" autocomplete="off">
+			<p:growl id="msgs" life="10000"/>
+			<b:container>
+			<div style="overflow-y: auto;">
+				<b:panel look="primary">
+					<h:panelGroup>
+						<b:row>
+							<b:column>
+								<div class="booking-details ui-fluid"
+									style="margin-left: 0px !important;">
+									
+									<h:panelGrid id="pnGrid" columns="3"  
+									    rendered="#{procesaEntradasController.ab_verGuardar}"
+										border = "0"
+      									cellpadding = "10" cellspacing = "1" 
+      									style="border-collapse: separate !important;  border-spacing:  5px !important;"
+										styleClass="ui-panelgrid-blank">
+										<f:facet name="header">
+											<h:outputText value="Procesar Entrada #{procesaEntradasController.li_asiento}" />
+										</f:facet>
+										
+										<h:outputText value="N° Entradas:"/>
+										<h:outputText value="#{procesaEntradasController.li_totalAsientos}"  />
+										<h:outputText value=""  />
+							           
+										
+										<h:outputText value="Tipo I.D.:" />
+										   <p:selectOneMenu id="smtipoId" value="#{procesaEntradasController.usuarioClienteCompra.tipoIdentificacion}" style="width:150px">
+								                <f:selectItem itemLabel="Seleccionar" itemValue="" noSelectionOption="true" />
+								                <f:selectItem itemLabel="Cédula" itemValue="C" />
+								                <f:selectItem itemLabel="RUC" itemValue="R" />
+								                <f:selectItem itemLabel="Pasaporte" itemValue="P" />
+								            </p:selectOneMenu>
+							            <h:outputText value=""  />
+							            
+										<h:outputText value="C.I.:"/>
+							            <p:inputText id="intCIDenoTarjeta" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" autocomplete="off" 
+							            	onblur="validaIdentificacion();" 
+											value="#{procesaEntradasController.usuarioClienteCompra.identificacion}" maxlength="20" onkeypress="if(event.which &lt; 48 || event.which &gt; 57 ) if(event.which != 8) if(event.which == 9) return false;"  />
+										<p:watermark for="intCIDenoTarjeta" value="1233645875" id="watermark21" />
+										
+										<h:outputText value="Nombre:"/>
+							            <p:inputText id="int_nombreParaEntrada" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" autocomplete="off" 
+											value="#{procesaEntradasController.usuarioClienteCompra.nombre}" maxlength="200" />
+										<p:watermark for="int_nombreParaEntrada" value="Nombre" id="watermark22" />
+										
+										<h:outputText value="Apellido"/>
+							            <p:inputText id="int_apellidoParaEntrada" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" autocomplete="off" 
+											value="#{procesaEntradasController.usuarioClienteCompra.apellido}" maxlength="200" />
+										<p:watermark for="int_apellidoParaEntrada" value="Apellido" id="watermark23" />
+
+										
+										<h:outputText value="E-mail:"/>
+							            <p:inputText id="intemailTarjeta" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" autocomplete="off" 
+											value="#{procesaEntradasController.usuarioClienteCompra.email}" maxlength="100"   />
+										<p:watermark for="intemailTarjeta" value="ejemplo@hotmail.com" id="watermark24" />
+										
+										<h:outputText value="Celular:"/>
+										<p:inputMask id="inpTelefono" value="#{procesaEntradasController.usuarioClienteCompra.celular}" mask="(099) 999-9999" style="width:160px"/>
+										<p:watermark for="inpTelefono" value="(099) 999-9999" id="watermark25" />
+										
+									</h:panelGrid>
+
+									<p:remoteCommand name="validaIdentificacion" actionListener="#{procesaEntradasController.validaIdentificacion}" update="pnGrid"/>
+
+									<div style="text-align: center;" class="ui-fluid">
+										<hr style="color:white ;" />
+
+										<p:commandButton id="bntGuardar" value="Procesar"
+												look="primary btn-block"
+												oncomplete="ReiniciarFoco(); "
+												actionListener="#{procesaEntradasController.guardaEntrada}" update="bntSalir1 msgs pnGrid bntGuardar gi_url bntGuardar otTextoFinal bntImprimir"
+												disabled="#{!procesaEntradasController.ab_verGuardar}"
+												styleClass="button"
+												style="border: 1px solid #1f89ce; color: #fff; background: #2399e5; width: 100px;" />	
+
+
+										<p:commandButton id="bntSalir1" value="Listo" styleClass="button" style="border: 1px solid #1f89ce; color: #fff; background: #2399e5; width: 100px;"  disabled="#{procesaEntradasController.ab_verGuardar}"
+											onclick="closeView();" rendered="#{procesaEntradasController.ab_verSalir}">
+										</p:commandButton>
+										<hr style="color:white ;" />
+										
+										<p:commandButton id="bntImprimir" value="Imprimir" styleClass="button" style="border: 1px solid #1f89ce; color: #fff; background: #2399e5; width: 100px;" 
+												onclick="PrintImage(1);" disabled="#{!procesaEntradasController.ab_verImprimir}"
+												rendered="#{!procesaEntradasController.ab_verSalir}">
+											</p:commandButton>
+										<br />
+										<h:outputText id="otTextoFinal" value="#{procesaEntradasController.ls_textoFinal}"/>
+										
+										<hr style="color:white ;" />
+										<h:graphicImage id="gi_url" value="#{procesaEntradasController.urlIMprime}" width="100%"/>
+
+									</div>
+
+								</div>
+
+							</b:column>
+						</b:row>
+
+
+						<script src="jQuery-Seat-Charts/jquery.seat-charts.min.js"></script>
+						<script src="jQuery-Seat-Charts/jquery.countdown.min.js"></script>
+					</h:panelGroup>
+				</b:panel>
+			</div>
+			</b:container>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Innuovation</title>
+
+    <h:outputStylesheet library="webjars" name="bootstrap/3.3.6/css/bootstrap.min-jsf.css" />
+    <h:outputStylesheet library="webjars" name="bootstrap/3.3.6/css/bootstrap-theme.min-jsf.css" />
+    <h:outputStylesheet library="webjars" name="font-awesome/4.5.0/css/font-awesome.min-jsf.css" />
+    <h:outputStylesheet name="css/style.css" />
+
+</h:head>
+<h:body>
+
+    <ui:include src="tp_menu_nuo.xhtml" />
+    <!--  <ui:include src="tp_header_nuo.xhtml" /> -->
+    <div class="con	tainer" style="padding-top: 15px;">
+    	<ui:insert name="content">Contenido de la pagina</ui:insert>
+        <ui:include src="tp_footer_nuo.xhtml" />
+    </div>
+
+    <!-- load js at bottom for faster loading-->
+    <h:outputStylesheet library="css" name="estilo_nuo.css" />
+    <h:outputScript library="webjars" name="jquery/2.1.4/jquery.min.js"/>
+    <h:outputScript library="webjars" name="bootstrap/3.3.6/js/bootstrap.min.js" />
+
+</h:body>
+</html>

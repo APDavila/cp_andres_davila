@@ -1,0 +1,59 @@
+<!DOCTYPE doctypeName [
+   <!ENTITY nbsp "&#160;">
+]>
+<ui:composition template="/WEB-INF/templatePopUp/geoReferencia.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+	<script>
+		function closeView() {
+			window.close();
+		}
+	</script>
+		<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=#{georeferenciaController.mapsJavaScriptAPIKey}">
+		</script>
+	<ui:define name="titulo">
+		Ubicación
+	</ui:define>
+	<ui:define name="content" style="display:contents;">
+		<script>
+			(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) {
+					return;
+				}
+				js = d.createElement(s);
+				js.id = id;
+				js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'Messenger'));
+
+			function closeView() {
+				MessengerExtensions.requestCloseBrowser(function success() {
+					console.log(success)
+				}, function error(err) {
+					console.log(err)
+				});
+			}
+		</script>
+		<ui:fragment>
+			<script type="text/javascript"
+				src="https://maps.google.com/maps/api/js?key=#{georeferenciaController.mapsJavaScriptAPIKey}"></script>
+
+		</ui:fragment>
+		<h:form prependId="false">
+			<p:growl id="messages" showDetail="true" life="2000" />
+			<p:panel id="pnlMapa" class="mapa letra">
+				<p:gmap id="gmap" center="#{georeferenciaController.latitudActual}, #{georeferenciaController.longitudActual}" zoom="17" onPointClick="handlePointClick(event);" 
+					type="HYBRID"  style="width:100%;height:100%" model="#{georeferenciaController.draggableModel}">
+					<p:ajax event="markerDrag" listener="#{georeferenciaController.onMarkerDrag}"/>
+				</p:gmap>
+					<p:commandButton value="Seleccionar Ubicación" action="#{georeferenciaController.confirmarDireccion}"
+					style="width:100%">
+				</p:commandButton>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,19 @@
+.paginaCompleta {
+	height: 536px;
+	width: 100%;
+}
+/* 2 columnas para tablets */
+@media ( min-width : 420px) {
+	.paginaCompleta {
+		height: 700px;
+		width: 100%;
+	}
+}
+/* 4 columnas para grandes dispositivos*/
+@media ( min-width : 760px) {
+	.paginaCompleta {
+		height: 1024px;
+		width: 100%;
+	}
+}
+

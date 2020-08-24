@@ -1,0 +1,36 @@
+.alignTop td {
+	vertical-align: top;
+}
+
+.backCeleste {
+	background-color: #f2f7ff;
+}
+
+.backNaranja {
+	background-color: #fff1c1;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.circle30
+    {
+    width: 5rem;
+    height: 5rem;
+    border-radius:50%;
+    font-size:30px;
+    color:#fff;
+    text-align:center;
+    background:#00aeef;
+    display: inline-block;
+}
+
+.menu-fixed{
+	position: fixed;
+	z-index:1000;
+	top:0;
+	width:100%;
+	max-width:1000px;
+	box-shadow:0px 4px 3px rgba(0,0,0,.5);
+}

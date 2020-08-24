@@ -1,0 +1,221 @@
+<ui:composition template="/WEB-INF/templatePopUp/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+	<script>
+		function closeView() {
+			window.close();
+		}
+	</script>
+	<ui:define name="titulo">
+		Carrito de Compras
+	</ui:define>
+	<ui:define name="content">
+		<ui:fragment>
+			<script>
+				(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) {
+						return;
+					}
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'Messenger'));
+
+				function closeView() {
+					MessengerExtensions.requestCloseBrowser(function success() {
+						console.log(success)
+					}, function error(err) {
+						console.log(err)
+					});
+				}
+			</script>
+		</ui:fragment>
+
+
+		<h:form id="frPrin">
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+					onsuccess="PF('statusDialog').hide()" />
+				<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+					closable="false" resizable="false" showHeader="false">
+					<p:graphicImage url="/images/ajax-loader.gif"
+						value="/images/ajax-loader.gif" name="/images/ajax-loader.gif" />
+				</p:dialog>
+			<b:container id="contenedor"
+				style="padding-left:0px;padding-right:0px;">
+				<p:growl id="msgs" showDetail="true" />
+				<p:panel style="margin-top:-0.5%;">
+					<h:outputText id="otCantidad"
+						style="font-size:90%;font-weight:bold;" value="Productos" />
+				</p:panel>
+				<p:panel id="pAcompanantes"
+					visible="#{carritoComprasController.lb_existePedido}">
+					<p:commandButton value="Vaciar Carrito"
+						action="#{carritoComprasController.eliminarPedido}"
+						icon="ui-icon-circle-close"
+						update=":frPrin:msgs :frPrin:dtPreguntas :frPrin:msgs" />
+					<br></br>
+					<br></br>
+					<p:dataTable id="dtPreguntas"
+						emptyMessage="Tu carrito no tiene productos."
+						value="#{carritoComprasController.listaProductosPedido}" var="ped"
+						styleClass="tblDatos" style="width:100%;">
+						<p:column headerText="">
+							<p:menubar>
+								<f:facet name="options">
+									<p:commandButton value="Eliminar item"
+										style="width:100%;font-size:50%;"
+										action="#{carritoComprasController.eliminarProducto(ped)}"
+										update=":frPrin" />
+								</f:facet>
+							</p:menubar>
+							<p:accordionPanel id="apProductos" collapsed="true"
+								activeIndex="1">
+								<p:tab
+									title="#{ped.nombreProducto}&#160;&#160;Cant:&#160;#{ped.cantidad}&#160;&#160;(Clic para ver detalles)"
+									style="font-size:65%;font-weight:bold;">
+									<table>
+										<tr style="text-align: center;">
+											<td><img src="#{ped.urlImagen}" width="100%"
+												style="max-height: 100%; max-width: 100%;" height="30%" /></td>
+											<!-- 											<td -->
+											<!-- 												style="border: none; text-align: center; width: 30%; display: contents"> -->
+											<!-- 												<img src="#{pro.url_imagen}" width="100%" height="35%" -->
+											<!-- 												style="max-height: 23%; max-width: 100%;" /> -->
+											<!-- 											</td> -->
+										</tr>
+										<tr>
+											<td style="border: none; text-align: center; width: 150%;">
+												<p:dataTable id="dtacompanantes"
+													emptyMessage="No tiene acompañantes"
+													value="#{ped.listaAcompanantes}" var="aco"
+													styleClass="tblDatos" style="width:100%">
+													<p:column headerText="" style="width:140%;">
+														<h:outputText id="otNombre" style="font-size:60%;"
+															value="&#160;#{aco.nombreAcompanante}&#160;" />
+													</p:column>
+													<p:column headerText="" style="text-align:left;width:60%;">
+														<h:outputText id="otPrecio" style="font-size:60%;"
+															value="&#160;#{aco.precio}" />
+													</p:column>
+												</p:dataTable> <p:dataTable id="dtCosto" value="#{ped}" var="acos"
+													styleClass="tblDatos" style="width:100%">
+													<p:column headerText=""
+														style="text-align:right;width:140%;">
+														<h:outputText style="font-size:60%;" value="Precio:" />
+														<br></br>
+														<h:outputText style="font-size:60%;" value="Acompañantes" />
+														<br></br>
+														<h:outputText style="font-size:60%;" value="Total:" />
+													</p:column>
+													<p:column headerText="" style="text-align:left;width:60%;">
+														<h:outputText id="precio" style="font-size:60%;"
+															value="&#160;#{acos.precio}" />
+														<br></br>
+														<h:outputText id="precioacompa" style="font-size:60%;"
+															value="&#160;#{acos.precioAcompanantes}" />
+														<br></br>
+														<h:outputText id="preciototal" style="font-size:60%;"
+															value="&#160;#{acos.total}" />
+													</p:column>
+												</p:dataTable> <p:dataTable id="dtCantidad" value="#{ped}" var="acos"
+													styleClass="tblDatos" style="width:100%">
+													<p:column headerText="" style="text-align:center;">
+														<p:commandButton id="cbDecrementar" value="-"
+															style="font-size:80%;font-weight:bold;margin-right:3%"
+															action="#{carritoComprasController.decrementarCantidad(ped.idDetallePedido,ped.cantidad)}"
+															update=":frPrin:dtPreguntas :frPrin:otEnvio :frPrin:otTotal :frPrin:otDomicilio :frPrin:otSDescuento  :frPrin:otMensaje" />
+														<h:outputText style="font-size:60%;"
+															value="#{ped.cantidad}" />
+														<p:commandButton id="cbIncrementar" value="+"
+															style="font-size:80%;font-weight:bold;margin-left:3%"
+															action="#{carritoComprasController.incrementarCantidad(ped.idDetallePedido,ped.cantidad)}"
+															update=":frPrin:dtPreguntas :frPrin:otEnvio :frPrin:otTotal :frPrin:otDomicilio :frPrin:otSDescuento :frPrin:msgs :frPrin:otMensaje" />
+													</p:column>
+												</p:dataTable>
+											</td>
+										</tr>
+									</table>
+								</p:tab>
+							</p:accordionPanel>
+							<br></br>
+						</p:column>
+						<br></br>
+						<br></br>
+					</p:dataTable>
+					<br></br>
+					<br></br>
+					<div style="text-align: -webkit-right; display: #{carritoComprasController.mensajeVisible}">
+						<table>
+							<tr>
+								<td><h:outputText id="otMensaje" style="font-size:110%;"
+										value="#{carritoComprasController.mensajePromocion}" /></td>
+							</tr>
+						</table>
+					</div>
+					<br></br>
+					<br></br>
+					<div style="text-align: -webkit-right;">
+						<table>
+							<tr>
+								<td><h:outputText style="font-size:110%;" value="Valor: $" />
+								</td>
+								<td style="text-align: end;"><h:outputText id="otEnvio"
+										style="font-size:110%;"
+										value="#{carritoComprasController.subTotal}" /></td>
+							</tr>
+							<tr>
+								<td><h:outputText style="font-size:110%;" value="Dsct: $" />
+								</td>
+								<td style="text-align: end;"><h:outputText
+										id="otSDescuento" style="font-size:110%;"
+										value="#{carritoComprasController.descuento}" /></td>
+							</tr>
+							<tr>
+								<td><h:outputText style="font-size:110%;" value="Envio: $" />
+								</td>
+								<td style="text-align: end;"><h:outputText id="otDomicilio"
+										style="font-size:110%;"
+										value="#{carritoComprasController.costoDomicilio}" /></td>
+							</tr>
+							<tr>
+								<td><h:outputText style="font-size:110%;" value="Total: $" />
+								</td>
+								<td style="text-align: end;"><h:outputText id="otTotal"
+										style="font-size:110%;"
+										value="#{carritoComprasController.costoTotal}" /></td>
+							</tr>
+						</table>
+					</div>
+					<br></br>
+					<br></br>
+					<div>
+						<table style="width: -webkit-fill-available;">
+							<tr>
+								<td style="text-align: left;"><p:commandButton
+										value="Ver Menú"
+										action="#{carritoComprasController.seguirComprando}"
+										update=":frPrin:msgs :frPrin:dtPreguntas" /></td>
+								<td style="text-align: right;"><p:commandButton
+										value="Comprar"
+										action="#{carritoComprasController.regresarChat}"
+										update=":frPrin:msgs ">
+									</p:commandButton></td>
+							</tr>
+						</table>
+					</div>
+				</p:panel>
+			</b:container>
+
+		</h:form>
+	</ui:define>
+	<ui:define name="footer">
+		<p:panel style="margin-top:-4%">
+			<div style="text-align: center">Hola-Lola</div>
+		</p:panel>
+	</ui:define>
+</ui:composition>

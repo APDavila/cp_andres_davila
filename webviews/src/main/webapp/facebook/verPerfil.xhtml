@@ -1,0 +1,658 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Ver y modificar información</ui:define>
+
+
+	<ui:define name="content">
+		<ui:fragment rendered="#{verPerfilController.conFbExtensions}">
+			<script>
+				(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) {
+						return;
+					}
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'Messenger'));
+
+				function closeView() {
+					MessengerExtensions.requestCloseBrowser(function success() {
+						console.log(success)
+					}, function error(err) {
+						console.log(err)
+					});
+				}
+			</script>
+
+
+
+
+
+		</ui:fragment>
+		<ui:fragment rendered="#{!verPerfilController.conFbExtensions}">
+			<script>
+				function closeView() {
+					window.close();
+				}
+			</script>
+		</ui:fragment>
+
+		<p:accordionPanel id="accPanel" prependId="false">
+			<p:tab title="Datos Personales" expanded="false">
+				<b:form id="formulario" horizontal="true" prependId="false">
+					<h:panelGroup>
+						<p:ajaxStatus onstart="PF('statusDialog').show()"
+							onsuccess="PF('statusDialog').hide()" />
+						<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+							closable="false" resizable="false" showHeader="false">
+							<p:graphicImage url="/images/ajax-loader.gif"
+								value="/images/ajax-loader.gif" name="/images/ajax-loader.gif" />
+						</p:dialog>
+						<p:growl id="msgsEditar" />
+						<b:container>
+							<p:panel>
+								<h:panelGroup>
+									<b:selectOneMenu id="tipoIdentificacion"
+										label="Tipo de Identificación" colMd="9" labelColMd="3"
+										name="tipoIdentificacion" var="a"
+										value="#{verPerfilController.tipoIdentificacion}">
+										<f:facet name="prepend">
+											<b:icon name="list" />
+										</f:facet>
+										<f:selectItem itemLabel="- Seleccione -" itemValue=""></f:selectItem>
+										<f:selectItem itemLabel="CEDULA" itemValue="C"></f:selectItem>
+										<f:selectItem itemLabel="RUC" itemValue="R"></f:selectItem>
+										<f:selectItem itemLabel="RUC PERSONA NATURAL" itemValue="N"></f:selectItem>
+										<f:selectItem itemLabel="PASAPORTE" itemValue="P"></f:selectItem>
+										<f:ajax execute="tipoIdentificacion"
+											listener="#{verPerfilController.validaCampos}"
+											render="apellidos" />
+									</b:selectOneMenu>
+
+									<b:inputText placeholder="Número de RUC/Cédula/Pasaporte"
+										label="Número de Identificación" id="numeroIdentificacion"
+										colMd="9" labelColMd="3" rendered="true"
+										value="#{verPerfilController.usuario.numeroIdentificacion}"
+										name="numeroIdentificacion">
+										<f:facet name="prepend">
+											<b:icon name="credit-card" />
+										</f:facet>
+									</b:inputText>
+									<b:label id="lblnombres" rendered="true" value="Tus Nombres"
+										style="font-weight:bold !important; color: black !important; background-color: transparent !important; font-size: 100% !important; padding: 0 !important;"
+										class="control-label" />
+									<br />
+									<b:inputText placeholder="Tus Nombres" id="nombres" colMd="9"
+										labelColMd="3" rendered="true"
+										value="#{verPerfilController.usuario.nombres}" name="nombres">
+										<f:facet name="prepend">
+											<b:icon name="credit-card" />
+										</f:facet>
+									</b:inputText>
+									<p:panel id="apellidos" style="border:hidden;margin-left:-4.5%;" visible="#{verPerfilController.solicitarApellidos == true}">
+										<b:inputText placeholder="Tus Apellidos" label="Tus apellidos"
+											 colMd="9" labelColMd="3"
+											value="#{verPerfilController.apellidos}" name="apellidos">
+											<div style="margin-left:-5%;">
+											<f:facet  name="prepend">
+												<b:icon name="credit-card" />
+											</f:facet>
+											</div>
+										</b:inputText>
+										</p:panel>
+									<b:inputText placeholder="YYYY-MM-DD" label="Fecha Nacimiento"
+										id="fechaNacimiento" colMd="9" labelColMd="3"
+										value="#{verPerfilController.usuario.fechaNacimiento}"
+										name="fechaNacimiento">
+										<f:convertDateTime pattern="yyyy-MM-dd" />
+										<f:facet name="prepend">
+											<b:icon name="calendar" />
+										</f:facet>
+									</b:inputText>
+									<b:inputText placeholder="Correo electrónico"
+										label="Correo electrónico" id="email" colMd="9" labelColMd="3"
+										rendered="true" value="#{verPerfilController.usuario.email}"
+										name="email">
+										<f:facet name="prepend">
+											<b:icon name="credit-card" />
+										</f:facet>
+									</b:inputText>
+
+									<b:inputText placeholder="Celular" label="Celular"
+										id="tcelular" colMd="9" labelColMd="3"
+										value="#{verPerfilController.usuario.celularPayphone}"
+										rendered="true" maxlength="10">
+
+										<f:facet name="prepend">
+											<b:icon name="earphone" />
+										</f:facet>
+									</b:inputText>
+									<div align="Center">
+										<b:commandButton value="Guardar"
+											action="#{verPerfilController.modificarUsuario}"
+											update="msgsEditar tipoIdentificacion numeroIdentificacion nombres fechaNacimiento email"
+											look="primary"></b:commandButton>
+									</div>
+									<script
+										src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js'></script>
+									<script
+										src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+									<script src="#{resource['js:validadorRuc.js']}"></script>
+									<script src="#{resource['js:customValidators.js']}"></script>
+									<script src="#{resource['js:moment.js']}"></script>
+									<script src="#{resource['js:moment-with-locales.js']}"></script>
+
+									<script type="text/javascript">
+										$(document)
+												.ready(
+														function() {
+
+															try {
+
+																var select = document
+																		.getElementById('tipoIdentificacionInner');
+
+																var cod = document
+																		.getElementById("tipoIdentificacionInner").value;
+
+																console
+																		.log(cod);
+																if (cod == 'R') {
+																	document
+																			.getElementById("input_nombres").placeholder = "Razón Social";
+																	document
+																			.getElementById("lblnombres").innerHTML = "Razón Social";
+																} else {
+																	if (cod == 'C') {
+																		document
+																				.getElementById("input_nombres").placeholder = "Tus nombres";
+																		document
+																				.getElementById("lblnombres").innerHTML = "Tus nombres";
+																	} else {
+																		if (cod == 'N') {
+																			document
+																					.getElementById("input_nombres").placeholder = "Tus nombres";
+																			document
+																					.getElementById("lblnombres").innerHTML = "Tus nombres";
+																		} else {
+																			document
+																					.getElementById("input_nombres").placeholder = "Tus nombres";
+																			document
+																					.getElementById("lblnombres").innerHTML = "Tus nombres";
+																		}
+																	}
+
+																}
+
+																select
+																		.addEventListener(
+																				"focus",
+																				function() {
+																					if (cod == 'R') {
+																						document
+																								.getElementById("input_nombres").placeholder = "Razón Social";
+																						document
+																								.getElementById("lblnombres").innerHTML = "Razón Social";
+																					} else {
+																					}
+																				});
+
+																select
+																		.addEventListener(
+																				'change',
+																				function() {
+																					console
+																							.log(cod);
+																					var selectedOption = this.options[select.selectedIndex];
+																					console
+																							.log(selectedOption.value
+																									+ ': '
+																									+ selectedOption.text);
+																					var str = selectedOption.text;
+																					if (str == 'RUC'
+																							|| str == 'R') {
+
+																						document
+																								.getElementById("input_nombres").placeholder = "Razón Social";
+																						document
+																								.getElementById("lblnombres").innerHTML = "Razón Social";
+
+																					} else {
+																						if (str == 'CEDULA'
+																								|| str == 'RUC PERSONA NATURAL'
+																								|| str == 'PASAPORTE'
+																								|| str == 'C'
+																								|| str == 'N'
+																								|| str == 'P') {
+																							document
+																									.getElementById("input_nombres").placeholder = "Tus Nombres";
+																							document
+																									.getElementById("lblnombres").innerHTML = "Tus Nombres";
+
+																						}
+																					}
+
+																					if (str == 'RUC'
+																							|| str == 'R') {
+																						document
+																								.getElementById("input_nombres").label = "Razón Social";
+																					} else {
+																						if (str == 'CEDULA'
+																								|| str == 'RUC PERSONA NATURAL'
+																								|| str == 'PASAPORTE'
+																								|| str == 'C'
+																								|| str == 'N'
+																								|| str == 'P') {
+																							document
+																									.getElementById("input_nombres").label = "Tus Nombres";
+																						}
+																					}
+
+																				});
+															} catch (err) {
+
+															}
+
+															$('#formulario')
+																	.bootstrapValidator(
+																			{
+
+																				message : 'El valor ingresado es inválido',
+																				fields : {
+
+																					email : {
+																						validators : {
+																							notEmpty : {
+																								message : 'Correo electrónico es requerido'
+																							},
+																							emailAddress : {
+																								message : 'Correo electrónico inválido'
+																							}
+																						}
+																					},
+																					tipoIdentificacionInner : {
+																						validators : {
+																							notEmpty : {
+																								message : 'Tipo de Identificación es requerido'
+																							},
+																							tipoDocumento : {
+																								field : 'numeroIdentificacion',
+																								message : 'Tipo de identificación no coincide con valor ingresado'
+																							}
+
+																						}
+																					},
+																					numeroIdentificacion : {
+																						validators : {
+																							notEmpty : {
+																								message : 'Número de Cédula/RUC/Pasaporte es requerido'
+																							},
+																							numeroDocumento : {
+																								field : 'tipoIdentificacionInner',
+																								message : 'Número de Identificación no coincide con tipo de documento'
+																							}
+																						}
+																					},
+																					nombres : {
+																						validators : {
+																							notEmpty : {
+																								message : 'Tus nombres son requeridos'
+																							}
+																						}
+																					},
+
+																					fechaNacimiento : {
+																						validators : {
+																							date : {
+																								message : 'La fecha no es válida, recuerda (YYYY-MM-DD))',
+																								format : 'YYYY-MM-DD'
+																							},
+																							callback : {
+																								message : 'La Fecha no está dentro del rango permitido o su formato no es válido Ej. 2014-09-01',
+																								callback : function(
+																										value,
+																										validator,
+																										$field) {
+
+																									var m = new moment(
+																											value,
+																											'YYYY-MM-DD',
+																											true);
+																									//console.log(m);
+																									if (!m
+																											.isValid()) {
+																										return false;
+																									}
+
+																									var fecha = new Date();
+																									var ano = fecha
+																											.getFullYear();
+
+																									if (m
+																											.isAfter((ano - 90)
+																													+ '/01/01')) {
+																										if (m
+																												.isBefore((ano - 15)
+																														+ '/12/30'))
+																											return true;
+																									}
+																									return false;
+																								}
+																							}
+																						}
+																					}
+
+																				}
+																			// termina fields
+																			}) // termina bootstrp validator
+														});// termina rmina ready
+
+										function esFormularioValido() {
+											var validator = $('#formulario')
+													.data('bootstrapValidator');
+											validator.validate();
+											return (validator.isValid());
+										}
+									</script>
+								</h:panelGroup>
+							</p:panel>
+						</b:container>
+
+					</h:panelGroup>
+				</b:form>
+			</p:tab>
+
+
+			<p:tab title="Tus direcciones" id="tusDirecciones" expanded="false">
+				<p:outputPanel id="toUpdateSubtipo1">
+
+					<h:panelGroup>
+
+
+						<b:container>
+
+							<p:panel id="mostrarDirecciones"
+								visible="#{verPerfilController.ab_estadoEditar}">
+								<b:form id="formularioDirecciones" horizontal="true"
+									prependId="false" cache="false">
+									<h:panelGroup>
+
+
+
+										<p:dataTable id="direcciones" tableStyle="table-layout: auto;"
+											value="#{verPerfilController.listaUbicacionUsuario}"
+											var="direcciones" widgetVar="wDirecciones">
+
+											<p:column headerText="Nombre">
+												<h:outputText value="#{direcciones.alias}" />
+											</p:column>
+
+											<p:column headerText="Principal">
+												<h:outputText rendered="#{direcciones.esPrincipal == true}"
+													value="Si">
+
+												</h:outputText>
+												<h:outputText rendered="#{direcciones.esPrincipal == false}"
+													value="No">
+
+												</h:outputText>
+
+											</p:column>
+
+											<p:column>
+												<div align="Center">
+													<p:commandButton value="Editar"
+														action="#{verPerfilController.obtenerUbicacionSeleccionada}"
+														update="mostrarDirecciones editarDireccion">
+														<f:param name="ubicacionAlias"
+															value="#{direcciones.alias}" />
+
+													</p:commandButton>
+												</div>
+											</p:column>
+
+
+										</p:dataTable>
+
+
+									</h:panelGroup>
+								</b:form>
+							</p:panel>
+						</b:container>
+
+					</h:panelGroup>
+
+				</p:outputPanel>
+
+				<p:outputPanel id="toUpdateSubtipo">
+
+					<h:panelGroup>
+
+						<b:container>
+							<p:panel id="editarDireccion" header="Editar dirección"
+								visible="#{!verPerfilController.ab_estadoEditar}"
+								prependId="false">
+
+								<b:form id="formularioDireccionesEditar" horizontal="true"
+									prependId="false" cache="false">
+									<h:panelGroup>
+
+										<p:growl id="msgsEditarDireccion" />
+										<f:facet name="header">
+											<h:outputText value="Datos de la dirección para editar" />
+										</f:facet>
+
+										<b:inputText
+											placeholder="#{verPerfilController.ubicacionUsuario.callePrincipalCalculada}"
+											label="Calle Principal" id="callePrincipal" colMd="9"
+											labelColMd="3"
+											value="#{verPerfilController.ubicacionUsuario.callePrincipal}"
+											rendered="#{verPerfilController.solicitarCallePrincipal}"
+											maxlength="300">
+											<f:facet name="prepend">
+												<b:icon name="home" />
+											</f:facet>
+										</b:inputText>
+
+										<b:inputText placeholder="Calle secundaria"
+											id="calleSecundaria" label="Calle Secundaria" colMd="9"
+											labelColMd="3"
+											value="#{verPerfilController.ubicacionUsuario.calleSecundaria}"
+											rendered="#{verPerfilController.solicitarCalleSecundaria}"
+											maxlength="300">
+											<f:facet name="prepend">
+												<b:icon name="road" />
+											</f:facet>
+										</b:inputText>
+
+										<b:inputText placeholder="Numeración" label="Numeración"
+											id="numeracion" colMd="9" labelColMd="3"
+											value="#{verPerfilController.ubicacionUsuario.numeracion}"
+											rendered="#{verPerfilController.solicitarNumeracion}"
+											maxlength="50">
+											<f:facet name="prepend">
+												<b:icon name="bookmark" />
+											</f:facet>
+										</b:inputText>
+
+										<b:inputText placeholder="Teléfono 021234567" label="Teléfono"
+											id="telefono" colMd="9" labelColMd="3"
+											value="#{verPerfilController.ubicacionUsuario.telefono}"
+											rendered="#{verPerfilController.solicitarTelefono}"
+											maxlength="9">
+
+											<f:facet name="prepend">
+												<b:icon name="earphone" />
+											</f:facet>
+										</b:inputText>
+
+										<b:inputText placeholder="Celular" label="Celular"
+											id="celular" colMd="9" labelColMd="3"
+											value="#{verPerfilController.ubicacionUsuario.celular}"
+											rendered="#{verPerfilController.solicitarCelular}"
+											maxlength="10">
+
+											<f:facet name="prepend">
+												<b:icon name="earphone" />
+											</f:facet>
+										</b:inputText>
+										<b:inputTextarea placeholder="Referencia" label="Referencia"
+											id="referencia" colMd="9" labelColMd="3"
+											value="#{verPerfilController.ubicacionUsuario.referenciaUbicacion}"
+											rendered="#{verPerfilController.solicitarReferencia}"
+											rows="3">
+											<f:facet name="prepend">
+												<b:icon name="pencil" />
+											</f:facet>
+										</b:inputTextarea>
+
+										<b:inputText placeholder="Casa - Trabajo" label="Alias"
+											id="alias" colMd="9" labelColMd="3"
+											value="#{verPerfilController.ubicacionUsuario.alias}"
+											rendered="#{verPerfilController.solicitarAlias}"
+											maxlength="10">
+											<f:facet name="prepend">
+												<b:icon name="pencil" />
+											</f:facet>
+										</b:inputText>
+
+										<b:selectOneMenu id="esPrincipal" name="esPrincipalInner"
+											label="Es tu direccion principal?" colMd="9" labelColMd="3"
+											value="#{verPerfilController.ubicacionUsuario.esPrincipal}"
+											rendered="#{verPerfilController.solicitarEsPrincipal}">
+											<f:facet name="prepend">
+												<b:icon name="list" />
+											</f:facet>
+											<f:selectItem itemLabel="- Seleccione -" itemValue=""></f:selectItem>
+											<f:selectItem itemLabel="Si" itemValue="true"></f:selectItem>
+											<f:selectItem itemLabel="No" itemValue="false"></f:selectItem>
+										</b:selectOneMenu>
+										<div align="Center">
+											<b:commandButton value="Guardar"
+												action="#{verPerfilController.modificarUbicacionUsuario}"
+												look="primary"></b:commandButton>
+
+
+
+										</div>
+										<script type="text/javascript">
+											$(document)
+													.ready(
+															function() {
+
+																$(
+																		'#formularioDireccionesEditar')
+																		.bootstrapValidator(
+																				{
+
+																					message : 'El valor ingresado es inválido',
+																					fields : {
+
+																						input_callePrincipal : {
+																							validators : {
+																								stringLength : {
+																									min : 2,
+																									message : 'Se requiere por lo menos dos caracteres'
+																								},
+																								notEmpty : {
+																									message : 'La calle principal es requerida'
+																								}
+																							}
+																						},
+																						input_calleSecundaria : {
+																							validators : {
+																								stringLength : {
+																									min : 2,
+																								}
+																							}
+																						},
+																						input_numeracion : {
+																							validators : {
+																								stringLength : {
+																									min : 2,
+																								},
+																								notEmpty : {
+																									message : 'La numeración es requerida'
+																								}
+																							}
+																						},
+																						input_telefono : {
+																							validators : {
+																								notEmpty : {
+																									message : 'Teléfono fijo es requerido (9 dig)'
+																								},
+																								regexp : {
+																									regexp : /^\d{9}$/i,
+																									message : 'Teléfono inválido (9 dig)'
+																								}
+																							}
+																						},
+																						input_celular : {
+																							validators : {
+																								notEmpty : {
+																									message : 'Celular requerido'
+																								},
+																								regexp : {
+																									regexp : /^\d{10}$/i,
+																									message : 'Número Celular inválido'
+																								}
+																							}
+																						},
+																						input_referencia : {
+																							validators : {
+																								stringLength : {
+																									min : 0,
+																									max : 200,
+																									message : 'Máximo 200 caracteres'
+																								}
+																							}
+																						},
+																						esPrincipalInner : {
+																							validators : {
+																								notEmpty : {
+																									message : '¿Es tu dirección principal?'
+																								}
+																							}
+																						}
+
+																					}
+																				// termina fields
+																				}) // termina bootstrp validator
+															});// termina rmina ready
+										</script>
+									</h:panelGroup>
+								</b:form>
+								<br />
+								<b:form>
+									<div align="Center">
+										<b:commandButton value="Regresar"
+											action="#{verPerfilController.irPanelVerDirecciones()}"
+											look="primary">
+
+										</b:commandButton>
+									</div>
+
+								</b:form>
+							</p:panel>
+						</b:container>
+					</h:panelGroup>
+
+				</p:outputPanel>
+
+
+			</p:tab>
+
+
+
+		</p:accordionPanel>
+
+	</ui:define>
+
+</ui:composition>

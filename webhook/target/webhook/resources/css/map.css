@@ -1,0 +1,35 @@
+.mapa {
+		height:485px;
+}
+/* 2 columnas para tablets */
+@media ( min-width : 420px) {
+	.mapa {
+	/* 		width:1500px; */
+	/* 		height:641px; */
+	}
+}
+/* 4 columnas para grandes dispositivos*/
+@media ( min-width : 760px) {
+	.mapa {
+/* 		width:1500px; */
+		height:1000px;
+	}
+}
+.letra {
+		font-size:100%;
+}
+/* 2 columnas para tablets */
+@media ( min-width : 420px) {
+	.letra {
+	/* 		width:1500px; */
+	/* 		height:641px; */
+	}
+}
+/* 4 columnas para grandes dispositivos*/
+@media ( min-width : 760px) {
+	.letra {
+/* 		width:1500px; */
+		font-size:200%;
+	}
+}
+

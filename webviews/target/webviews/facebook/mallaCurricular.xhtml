@@ -1,0 +1,43 @@
+<ui:composition template="/WEB-INF/templatePopUp/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+	<link href="css/imagenes.css" type="text/css" rel="stylesheet" />
+	<script>
+		function closeView() {
+			closeView1();
+			MessengerExtensions.requestCloseBrowser(function success() {
+				console.log(success)
+			}, function error(err) {
+				console.log(err)
+			});
+		}
+
+		function closeView1() {
+			window.close();
+		}
+	</script>
+	<ui:define name="titulo">
+	Malla Curricular 
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="form">
+			<p:ajaxStatus onstart="PF('statusDialog').show()"
+				onsuccess="PF('statusDialog').hide()" />
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false">
+				<p:graphicImage url="/images/ajax-loader.gif"
+				value="/images/ajax-loader.gif" name="/images/ajax-loader.gif" />
+			</p:dialog>
+			<p:growl id="msgs" showDetail="true" />							
+			<iframe src="#{mallaCurricularController.urlMalla}" class="paginaCompleta"></iframe>						
+		</h:form>
+	</ui:define>
+	<ui:define name="footer">
+		<p:panel>
+			<div style="text-align: center">Componente Práctico - Andrés Dávila</div>
+		</p:panel>
+	</ui:define>
+</ui:composition>

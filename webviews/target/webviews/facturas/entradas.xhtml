@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+	<title>Entradas</title>
+	<ui:insert name="head" />
+</h:head>
+
+<h:body  style="font-size: x-small !important; background-repeat: no-repeat;background-size: 100% 100%;background-image: url('https://lola.nuo.com.ec/images/hl_images/AFNA/futbolfondo2.png') !important; height: 100vh !important;">
+
+	<p:ajaxStatus onstart="PF('statusDialog').show();"
+		onsuccess="PF('statusDialog').hide()" />
+
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+		closable="false" resizable="false" showHeader="false">
+		<p:graphicImage url="/images/ajaxloadingbar.gif"
+			value="/images/ajaxloadingbar.gif" name="/images/ajaxloadingbar.gif" />
+	</p:dialog>
+
+	<h:form id="form" autocomplete="off">
+
+		<p:growl id="msgs" showDetail="true" />
+
+		<p:layout>
+		
+			<p:layoutUnit id="pnDetalle" position="center" size="70%">
+				<p:megaMenu orientation="horizontal" style="margin-top:2px">
+					<p:menuitem value="Nuevo"
+						actionListener="#{entradasController.nuevo}"
+						update=":form:pnOpciones  msgs :form:bntImprimir form:inpIdentificacion form:inpNombre  form:inpApellido  form:inpDireccion form:inpTelefono form:inpEmail form:basic" 
+						icon="ui-icon-gear" >
+						 <f:ajax render=":form:pnOpciones"/>
+				    </p:menuitem>
+
+					<p:menuitem value="Genera Boletos"  
+						action="#{entradasController.irAImpresion}"
+						icon="ui-icon-disk"  
+						update=":form:pnOpciones msgs :form:bntImprimir">
+						 <f:ajax render=":form:pnOpciones"/>
+				    </p:menuitem>
+				</p:megaMenu>
+
+				<p:panelGrid columns="1" layout="grid">
+
+					<p:outputLabel for="opFechaInicioDll" value="Fecha: "
+						style="width: 10%;" />
+					<p:calendar id="opFechaInicioDll" locale="es"
+						value="#{entradasController.ad_fecha}" pattern="dd-MM-yyyy"
+						mask="true" />
+
+					<p:outputLabel for="smtipoId" value="Tipo I.D.: "
+						style="width: 10%;" />
+					<p:selectOneMenu id="smtipoId"
+						value="#{entradasController.tipoIdentificacion}"
+						style="width:150px">
+						<f:selectItem itemLabel="Cédula" itemValue="C" />
+						<f:selectItem itemLabel="RUC" itemValue="R" />
+						<f:selectItem itemLabel="Pasaporte" itemValue="P" />
+					</p:selectOneMenu>
+
+
+
+
+					<p:outputLabel for="inpIdentificacion" value="Identificación: "
+						style="width: 10%;" />
+					<p:remoteCommand name="obtenerUsuario"
+						actionListener="#{entradasController.obtenerUsuario()}"
+						update="inpNombre inpApellido inpDireccion inpTelefono inpEmail" />
+					<p:inputText id="inpIdentificacion" rendered="true"
+					    onblur="obtenerUsuario();" 
+						update="inpNombre" value="#{entradasController.identificacion}"
+						onkeypress="if(event.which &lt; 48 || event.which &gt; 57 ) if(event.which != 8) if(event.which == 9) return false;"
+						style="width:160px" maxlength="20">
+
+					</p:inputText>
+
+					<p:outputLabel for="inpNombre" value="Nombre: " style="width: 10%;" />
+					<p:inputText id="inpNombre" value="#{entradasController.nombres}"
+						style="width:350px" maxlength="200">
+					</p:inputText>
+					
+					<p:outputLabel for="inpApellido" value="Apellido: " style="width: 10%;" />
+					<p:inputText id="inpApellido" value="#{entradasController.apellidos}"
+						style="width:350px" maxlength="200">
+					</p:inputText>
+
+					<p:outputLabel for="inpDireccion" value="Dirección: "
+						style="width: 10%;" />
+					<p:inputText id="inpDireccion"
+						value="#{entradasController.direccion}" style="width:350px"
+						maxlength="400">
+					</p:inputText>
+
+					<p:outputLabel for="inpTelefono" value="Celular: "
+						style="width: 10%;" />
+					<p:inputMask id="inpTelefono"
+						value="#{entradasController.telefono}"
+						mask="(099) 999-9999" style="width:160px" />
+
+					<p:outputLabel for="inpEmail" value="Email: " style="width: 10%;" />
+					<p:inputText id="inpEmail"
+						value="#{entradasController.email}" style="width:200px"
+						maxlength="50">
+					</p:inputText>
+
+
+					<p:outputLabel for="smGeneroDll" value="Evento "
+						style="width: 10%;" />
+					<p:selectOneMenu id="smGeneroDll"
+						value="#{entradasController.productoString}"
+						style="width:150px; float: left;">
+						<f:selectItem itemValue="0" itemLabel="Seleccione una opción" />
+						<f:selectItems value="#{entradasController.productoLista}"
+							var="productoCombo" itemLabel="#{productoCombo.nombre}"
+							itemValue="#{productoCombo.id}"></f:selectItems>
+						<f:ajax execute="smGeneroDll" render="smLocalidadDll"
+							listener="#{entradasController.obtenerAcompananteProducto}" />
+
+					</p:selectOneMenu>
+	
+
+					<p:outputLabel for="smLocalidadDll" value="Localidad: "
+						style="width: 10%;" />
+
+					<p:selectOneMenu id="smLocalidadDll"
+						value="#{entradasController.acompananteProductoString}"
+						style="width:150px; float: left;">
+
+						<f:selectItems value="#{entradasController.acompananteProducto}"
+							var="acompananteProducto"
+							itemLabel="#{acompananteProducto.acompananteProveedor.nombre}"
+							itemValue="#{acompananteProducto.acompananteProveedor.nombre}"></f:selectItems>
+
+					</p:selectOneMenu>
+
+					<p:outputLabel for="basic" value="Número Ent.: "
+						style="width: 10%;" />
+					<p:spinner id="basic" value="#{entradasController.numeroEntradas}"
+						style="float: left;" >
+						<p:ajax event="change" listener="#{entradasController.numeroEntradasCambio}"  />
+  					</p:spinner>
+
+				</p:panelGrid>
+
+			</p:layoutUnit>
+			
+			<h:graphicImage id="gi_url" value="#{entradasController.boleto}" width="10%" style="visibility: hidden;"/>
+
+			<p:layoutUnit position="east" size="30%" header="" resizable="true"
+				closable="false" collapsible="false" effect="drop">
+				<p:commandButton id="bntImprimir" value="Listo" styleClass="button" style="border: 1px solid #1f89ce; color: #fff; background: #2399e5; width: 100px;" 
+								 action="#{entradasController.cerrarBoletos}" rendered="#{entradasController.verListo}">
+				</p:commandButton>
+				<p:panel id="pnOpciones" header="Boletos" footer=""
+					style="margin-bottom:20px; height: 100vh;">
+			
+					<iframe id="imagepgframe1" src="#{entradasController.ulrEntradas}" style="height: 100vh; width: 100%;"  frameborder="0">
+
+					</iframe>
+
+				</p:panel>
+			</p:layoutUnit>
+			
+		</p:layout>
+
+
+	</h:form>
+</h:body>
+</html>

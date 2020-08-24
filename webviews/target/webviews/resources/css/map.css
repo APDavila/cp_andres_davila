@@ -1,0 +1,18 @@
+.gmap {
+	width:1500px;
+		height:641px;
+}
+/* 2 columnas para tablets */
+@media ( min-width : 420px) {
+	.gmap {
+		width:1500px;
+		height:641px;
+	}
+}
+/* 4 columnas para grandes dispositivos*/
+@media ( min-width : 760px) {
+	.gmap {
+		width:1500px;
+		height:1000px;
+	}
+}

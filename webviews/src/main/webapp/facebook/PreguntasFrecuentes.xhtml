@@ -1,0 +1,83 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+	<ui:define name="titulo">Preguntas Frecuentes</ui:define>
+
+    <ui:define name="content">
+    	
+		<b:form id="formulario" horizontal="true" prependId="false" style="color: floralwhite; height: 100vh !important;"
+			autocomplete="off">
+			
+			<h3 style="margin-top:0">Preguntas Frecuentes</h3>
+		    <p:accordionPanel>
+		        <p:tab title="1. ¿Qué es Place to Pay? ">
+		            <h:panelGrid columns="1" cellpadding="10">
+		                <h:outputText
+		                    value="Place to Pay es la plataforma de pagos electrónicos que usa Hola Lola para procesar en línea las transacciones generadas en la tienda virtual con las formas de pago habilitadas para tal fin. " />
+		            </h:panelGrid>
+		        </p:tab>
+		        
+		         <p:tab title="2. ¿Cómo puedo pagar? ">
+		            <h:panelGrid columns="1" cellpadding="10">
+		                <h:outputText
+		                    value="En la tienda virtual de Hola Lola usted podrá realizar su pago utilizando: Tarjetas de Crédito de las siguientes franquicias: Diners, Visa y MasterCard; de todos los bancos en lo que corresponde a pago corriente y en cuanto a diferido, únicamente las tarjetas emitidas por Banco Pichincha, Loja, BGR y Machala. Pronto extenderemos esta lista de opciones para nuestros clientes." />
+		            </h:panelGrid>
+		        </p:tab>
+		        
+		         <p:tab title="3. ¿Es seguro ingresar mis datos bancarios en este sitio web? ">
+		            <h:panelGrid columns="1" cellpadding="10">
+		                <h:outputText
+		                    value="Para proteger tus datos Hola Lola delega en Place to Pay la captura de la información sensible. Nuestra plataforma de pagos cumple con los estándares exigidos por la norma internacional PCI DSS de seguridad en transacciones con tarjeta de crédito. Además tiene certificado de seguridad SSL expedido por GeoTrust una compañía Verisign, el cual garantiza comunicaciones seguras mediante la encriptación de todos los datos hacia y desde el sitio; de esta manera te podrás sentir seguro a la hora de ingresar la información de su tarjeta. " />
+		                <h:outputText
+		                    value="Durante el proceso de pago, en el navegador se muestra el nombre de la organización autenticada, la autoridad que lo certifica y la barra de dirección cambia a color verde. Estas características son visibles de inmediato, dan garantía y confianza para completar la transacción en Place to Pay. " />
+		                <h:outputText
+		                    value="Place to Pay también cuenta con el monitoreo constante de McAfee Secure y la firma de mensajes electrónicos con Certicámara." />
+		                <h:outputText
+		                    value="Place to Pay es una marca de la empresa colombiana EGM Ingeniería Sin Fronteras S.A.S. " />
+		            </h:panelGrid>
+		        </p:tab>
+		        
+		         <p:tab title="4. ¿Puedo realizar el pago cualquier día y a cualquier hora? ">
+		            <h:panelGrid columns="1" cellpadding="10">
+		                <h:outputText
+		                    value="Sí, en Hola Lola podrás realizar tus compras en línea los 7 días de la semana, las 24 horas del día a sólo un clic de distancia. " />
+		            </h:panelGrid>
+		        </p:tab>
+		        
+		         <p:tab title="5. ¿Puedo cambiar la forma de pago?">
+		            <h:panelGrid columns="1" cellpadding="10">
+		                <h:outputText
+		                    value="Si aún no has finalizado tu pago, podrás volver al paso inicial y elegir la forma de pago que prefieras. Una vez finalizada la compra no es posible cambiar la forma de pago. " />
+		            </h:panelGrid>
+		        </p:tab>
+		        
+		         <p:tab title="6. ¿Pagar electrónicamente tiene algún valor para mí como comprador? ">
+		            <h:panelGrid columns="1" cellpadding="10">
+		                <h:outputText
+		                    value="No, los pagos electrónicos realizados a través de Place to Pay no generan costos adicionales para el comprador. " />
+		            </h:panelGrid>
+		        </p:tab>
+		        
+		         <p:tab title="7. ¿Qué debo hacer si mi transacción no concluyó?">
+		            <h:panelGrid columns="2" cellpadding="10">
+		                <h:outputText
+		                    value="En primera instancia deberás revisar si llegó un mail de confirmación del pago en tu cuenta de correo electrónico (la inscrita en el momento de realizar el pago), en caso de no haberlo recibido, deberás contactar a soporte@placetopay.com para confirmar el estado de la transacción. " />
+		            </h:panelGrid>
+		        </p:tab>
+		        
+		         <p:tab title="8. ¿Qué debo hacer si no recibí el comprobante de pago?">
+		            <h:panelGrid columns="2" cellpadding="10">
+		                <h:outputText
+		                    value="Por cada transacción aprobada a través de Place to Pay, recibirás un comprobante del pago con la referencia de compra en la dirección de correo electrónico que indicaste al momento de pagar. Si no lo recibes, podrás contactar a soporte@placetopay.com, para solicitar el reenvío del comprobante a la misma dirección de correo electrónico registrada al momento de pagar." />
+		            </h:panelGrid>
+		        </p:tab>
+		       
+		    </p:accordionPanel>
+ 			
+		</b:form>
+	</ui:define>	
+</ui:composition>

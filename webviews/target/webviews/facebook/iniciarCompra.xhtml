@@ -1,0 +1,161 @@
+<ui:composition template="/WEB-INF/templatePopUp/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+	<style type="text/css">
+.ui-sticky {
+	top: 70px !important;
+}
+
+@media ( max-width : 960px) {
+	.ui-sticky {
+		top: 110px !important;
+	}
+}
+</style>
+	<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+		<f:facet name="default">
+			<h:outputText value="Status: StandBy" />
+		</f:facet>
+
+		<f:facet name="start">
+			<p:graphicImage name="/demo/images/ajaxloadingbar.gif" />
+		</f:facet>
+
+		<f:facet name="complete">
+			<h:outputText value="Status: Completed" />
+		</f:facet>
+	</p:ajaxStatus>
+	<p:ajaxStatus onstart="PF('statusDialog').show()"
+		onsuccess="PF('statusDialog').hide()" />
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+		closable="false" resizable="false" showHeader="false">
+		<p:graphicImage name="/demo/images/ajaxloadingbar.gif" />
+	</p:dialog>
+	<script>
+		function closeView() {
+			closeView1();
+			MessengerExtensions.requestCloseBrowser(function success() {
+				console.log(success)
+			}, function error(err) {
+				console.log(err)
+			});
+		}
+
+		function closeView1() {
+			window.close();
+		}
+	</script>
+	<ui:define name="titulo">
+	Menú
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="form">
+			<p:ajaxStatus onstart="PF('statusDialog').show()"
+				onsuccess="PF('statusDialog').hide()" />
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false">
+				<p:graphicImage url="/images/ajax-loader.gif"
+				value="/images/ajax-loader.gif" name="/images/ajax-loader.gif" />
+			</p:dialog>
+			<p:growl id="msgs" showDetail="true" />
+
+			<div id="panel de arriba"
+				style="position: sticky; /* width: -webkit-fill-available; */ z-index: 1000; top: 0; max-width: 100%; width: 100%; box-shadow: 0px 4px 3px rgba(0, 0, 0, .5);">
+				<div style="display: flex; background: white;">
+					<div style="width: 70%;">
+						<!-- 						<p:inputText id="float-input" value="#{iniciarCompraController.asBusqueda}" placeholder="search" style="margin-top:2%;margin-left:3%;"/> -->
+						<p:inputText id="itBusqueda"
+							value="#{iniciarCompraController.filtroBusqueda}"
+							placeholder="Ingrese el producto"
+							 maxlength="200"
+							style="margin-top:2%;margin-left:3%;border: outset;"
+							update=":plPrincipal :msgs">
+						</p:inputText>
+
+						<p:commandButton id="cbBusqueda" process="@this,itBusqueda" 
+							style="width: 15%;margin-left: 1.3%;" icon="ui-icon-search"
+							action="#{iniciarCompraController.busqueda(iniciarCompraController.filtroBusqueda)}"
+							update=":form:msgs :form" />
+					</div>
+					<div style="width: 30%;">
+						<a href="#{iniciarCompraController.linkCarrito}"
+							style="text-decoration: none"> <p:toolbar
+								style="/* width: max-content; */width: 100%;height: 100%;">
+								<f:facet name="right">
+									<img
+										src="https://lola.nuo.com.ec/images/hl_images/micarrito.png"
+										width="30%" height="4.5%" />
+									<h:outputText style="font-size:70%;font-weight:bold;"
+										value="&#160;Ver Carrito" />
+								</f:facet>
+							</p:toolbar>
+						</a>
+					</div>
+
+				</div>
+				<b:container style="overflow-x: auto;white-space: nowrap;">
+					<p:breadCrumb model="#{iniciarCompraController.modeloMenu}"
+						style="width:max-content;margin-left:-4.5%;min-width: 108.5%;font-size:90%;">
+					</p:breadCrumb>
+				</b:container>
+			</div>
+			<div id="panel de abajo">
+
+				<p:panel>
+					<div id="home"></div>
+					<div></div>
+					<img src="#{iniciarCompraController.urlImagenProveedor}"
+						style="margin-top: 9.5%;" width="100%" height="50%" />
+					<p:dataTable id="dtCompleta" emptyMessage="No tiene categorias"
+						widgetVar="carsTable"
+						value="#{iniciarCompraController.listaPrincipal}" var="pri"
+						styleClass="tblDatos" style="width:100%;margin-top:5%">
+						<p:column headerText="" visible="#{pri.tieneProductos}"
+							filterMatchMode="contains">
+							<div id="#{pri.nombreCategoria}" style="text-align: center;"></div>
+							<br></br>
+							<p:separator style="height:4px" />
+							<div style="text-align: center;">
+								<h:outputText value="#{pri.verCategoria}"
+									style="font-size:90%;font-weight:bold;" />
+							</div>
+							<p:separator style="height:4px" />
+							<p:dataTable id="dtDatosProductos"
+								emptyMessage="Esta categoría no tiene productos"
+								value="#{pri.listaProductos}" var="pro" styleClass="tblDatos"
+								style="width:100%;">
+								<p:column headerText=""
+									style="border: none; text-align: center; width: 30%; display: contents">
+									<a href="#{pro.url}" style="text-decoration: none"> 
+									<img
+										src="#{pro.url_imagen}" width="100%" height="35%"
+										style="max-height: 23%; max-width: 100%;" />
+									</a>
+								</p:column>
+								<p:column headerText=""
+									style="border: none; text-align: center; width: 70%;">
+									<a href="#{pro.url}" style="text-decoration: none"> <h:outputText
+											value="#{pro.nombreMostrar}"
+											style="font-size:90%;font-weight:bold;" /> <br></br> <h:outputText
+											value="#{pro.precio}" style="font-size:90%;font-weight:bold;" />
+										<br></br>
+									</a>
+								</p:column>
+							</p:dataTable>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</div>
+
+		</h:form>
+	</ui:define>
+	<ui:define name="footer">
+		<p:panel>
+			<div style="text-align: center">Hola-Lola</div>
+		</p:panel>
+	</ui:define>
+</ui:composition>

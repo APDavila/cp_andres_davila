@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+	<title>Entradas</title>
+	<ui:insert name="head" />
+
+    <script type="text/javascript">  
+
+
+        PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Anterior',
+                nextText: 'Siguiente',
+                monthNames: ['Enero','Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+                dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+                dayNamesShort: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D','L','M','M','J','V','S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Hora',
+                timeText: 'Tiempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                currentText: 'Fecha actual',
+                ampm: false,
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText : 'Todo el día'
+        };
+       
+        </script>
+
+
+</h:head>
+
+<h:body style="font-size: xx-small !important; max-width: 420px; width: 420px;">
+				
+		<script>
+		function myFunction() {
+			document.getElementById("bntImprime").style.display = "none"; 
+		    window.print();		     
+		}		
+		</script>
+
+	<div style="max-width: 420px; width: 420px;">
+		<div style="border: 1px solid #ccc !important; border-radius: 16px; max-width: 420px; width: 420px; text-align: center;">
+	        <h:panelGrid columns="2"  >
+	            <img src="https://lola.nuo.com.ec/images/hl_images/facEntrada.jpg" style="width: 80px; height: 100px; margin-left: 5px;" /> 
+	             <h:panelGrid columns="1" cellpadding="5">
+	             		<h:outputText value="DOCUMENTO DE RESPALDO" style="font-weight: bold;"/>
+				 
+				   	    <h:outputText value="NO ES VÁLIDO COMO COMPROBANTE PARA EL SRI" style="font-weight: bold; color: red;"/>
+				 
+				   	    <h:outputText value="SUCURSAL - NUO" style="font-weight: bold;"/>
+				 
+				   	    <h:outputText value="De los Guarumos 449 y 6 de Diciembre Ed. Totaltek - NUO, piso 3" style="font-weight: bold;"/>
+	             </h:panelGrid>
+	        </h:panelGrid>
+	    </div>
+				    
+	   		<br />
+		   <p:panelGrid columns="4" styleClass="ui-noborder" width="420px" style="max-width: 420px;">
+			  
+			 	
+			 	
+			    <h:outputText value="Identif.:" style="font-weight: bold;"/>
+			    <h:outputText value="#{entradasController.identificacion}" />
+			    <h:outputText value="Nombre:" style="font-weight: bold;"/>
+			    <h:outputText value="#{entradasController.nombres}" />
+			 
+			    <h:outputText value="Celular:" style="font-weight: bold;"/>
+			    <h:outputText value="#{entradasController.telefono}" />
+			     <h:outputText value="Dirección:" style="font-weight: bold;"/>
+			    <h:outputText value="#{entradasController.direccion}" />
+			    
+			    <h:outputText value="Fecha:" style="font-weight: bold;"/>
+			    <h:outputText value="#{entradasController.fecha}" />
+			    <h:outputText value="Email:" style="font-weight: bold;"/>
+			    <h:outputText value="#{entradasController.email}" />
+			     
+			    
+			</p:panelGrid>
+ 
+		
+		<p:panelGrid columns="4" style="text-align: center; width:420px" width="420px">
+		   
+		    <h:outputText value="CNT" style="font-weight: bold;"/>
+		    <h:outputText value="Descripción" style="font-weight: bold;"/>
+		    <h:outputText value="P. UNI" style="font-weight: bold;"/>
+		    <h:outputText value="VALOR" style="font-weight: bold;"/>
+		 
+		    <h:outputText value="#{entradasController.numeroEntradas}" style="float: right;" />
+		    <h:outputText value="Evento #{entradasController.opcionPartido}" />
+		    <h:outputText value="5.71" style="float: right;"/>
+		    <h:outputText value="#{entradasController.total}" style="font-weight: bold; float: right;"/>
+		    
+		    
+		    <h:outputText value="" />
+		    <h:outputText value="" />
+		    <h:outputText value="Adm.:" style="font-weight: bold; float: right;" />
+		    <h:outputText value="#{entradasController.total}" style="font-weight: bold; float: right;"/>
+		    
+		    
+		    <h:outputText value="" />
+		    <h:outputText value="" />
+		    <h:outputText value="Imp.:" style="font-weight: bold; float: right;" />
+		    <h:outputText value="#{entradasController.impuesto}" style="font-weight: bold; float: right;"/>
+		    
+		    <h:outputText value="" />
+		    <button id="bntImprime" onclick="myFunction()">Imprimir</button>
+		    <h:outputText value="Total:" style="font-weight: bold; float: right;" />
+		    <h:outputText value="#{entradasController.totalConImp}" style="font-weight: bold; float: right;"/>
+		    
+    
+		</p:panelGrid>
+		<p:panelGrid columns="1" style="text-align: center; width:420px" width="420px">
+			<h:outputText value="Su factura Electrónica sera enviada al correo electronico #{entradasController.email}" style="font-weight: bold;" />
+	    </p:panelGrid>
+    </div>
+</h:body>
+</html>

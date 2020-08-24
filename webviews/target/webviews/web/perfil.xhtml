@@ -1,0 +1,136 @@
+<ui:composition template="/WEB-INF/template/tp_plantilla_nuo.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+		<p:outputPanel deferred="true" styleClass="franjaTitulo">
+			<h3>Perfil</h3>
+		</p:outputPanel>
+		<h:form id="fmContenedor">
+
+
+			<p:growl id="dwMensaje" life="6000"
+				style="z-index: 2030 !important; margin-top: 50px !important;;"
+				showDetail="true" showSummary="false" />
+
+
+			<p:panel header="Filtros" id="pnfiltros"
+				style="width:100%; border: transparent; background: transparent;"
+				visible="#{perfilController.lb_verFiltros}" collapsible="false">
+
+				<p:calendar id="opFechaInicioDll1"
+					value="#{perfilController.dt_fecha}" />
+				
+
+				<h:panelGrid columns="4" style="width:100%" cellpadding="5">
+
+
+					<b:inputText value="#{perfilController.ls_busNombre}"
+						label="Nombre" />
+					<h:column style="text-align:center;">
+						<div style="text-align: center;">
+							<p:inputSwitch value="#{perfilController.lb_buseEstaActivo}"
+								label="Estado" onLabel="Activos" offLabel="Inactivos" />
+						</div>
+					</h:column>
+					<h:column style="text-align:center;">
+						<div style="text-align: center;">
+							<b:commandButton look="success" value="Buscar"
+								style="margin-top: 7%;"
+								update=":fmContenedor:pnfiltros:datos :fmContenedor:pnfiltros :fmContenedor:pnCreacion :fmContenedor:dwMensaje"
+								icon="search" action="#{perfilController.buscar()}" />
+						</div>
+					</h:column>
+					<h:column style="text-align:center;">
+						<div style="text-align: center;">
+							<b:commandButton look="primary" value="Nuevo"
+								style="margin-top: 7%;"
+								update=":fmContenedor:pnfiltros :fmContenedor:pnCreacion :fmContenedor:dwMensaje"
+								icon="fa-file-o" action="#{perfilController.nuevo()}" />
+						</div>
+					</h:column>
+				</h:panelGrid>
+
+				<center>
+					<p:dataTable id="datos" value="#{perfilController.listaPerfiles}"
+						widgetVar="perfilTable" rows="15" var="item" paginator="true"
+						paginatorPosition="bottom"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" styleClass="table table-striped"
+						style="width:70%">
+
+						<p:column headerText="Nombre" sortBy="#{item.nombre}">
+							<h:outputText value="#{item.nombre}" />
+						</p:column>
+
+						<p:column headerText="Activo">
+							<div style="text-align: center;">
+								<b:selectBooleanCheckbox value="#{item.estaActivo}"
+									disabled="true" />
+							</div>
+						</p:column>
+
+						<p:column headerText="Activo" style="text-align:center;">
+							<b:commandButton value="Editar" iconAwesome="pencil"
+								action="#{perfilController.editar(item)}"
+								update=":fmContenedor:pnfiltros :fmContenedor:pnCreacion :fmContenedor:dwMensaje">
+							</b:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</center>
+			</p:panel>
+
+			<p:panel id="pnCreacion"
+				style="width:100%; border: transparent; background: transparent;"
+				visible="#{!perfilController.lb_verFiltros}" collapsible="false">
+				<h3>
+					<p:outputLabel value="#{perfilController.ls_tituloCrea}" />
+				</h3>
+				<div style="width: 100%">
+					<b:commandButton look="primary" value="Guardar" style="float:right"
+						update=":fmContenedor:pnfiltros :fmContenedor:pnCreacion :fmContenedor:dwMensaje"
+						icon="fa-save" action="#{perfilController.guardar()}" />
+					<h:outputText value="&#160;" style="float:right" />
+					<h:outputText value="&#160;" style="float:right" />
+					<b:commandButton look="danger" value="Cancelar" style="float:right"
+						update=":fmContenedor:pnfiltros :fmContenedor:pnCreacion :fmContenedor:dwMensaje"
+						icon="fa-ban" action="#{perfilController.cancelar()}" />
+				</div>
+				<br />
+				<br />
+				<br />
+				<div style="width: 100%">
+					<b:panelGrid columns="2" style="width:70%">
+						<b:column style="text-align: end;">
+							<h:outputText value="Nombre:"
+								style="font-weight: bold; text-align: end;"></h:outputText>
+						</b:column>
+						<b:inputText value="#{perfilController.perfilSeleccionado.nombre}"
+							style="text-transform: uppercase" />
+						<b:column style="text-align: end;">
+
+							<h:outputText value="Estado:"
+								style="font-weight: bold; text-align: end;"></h:outputText>
+
+						</b:column>
+
+						<p:inputSwitch
+							value="#{perfilController.perfilSeleccionado.estaActivo}"
+							label="Estado" onLabel="Si" offLabel="No" />
+					</b:panelGrid>
+				</div>
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+
+	<!--  <h:outputStylesheet library="css" name="estilo_nuo.css" />
+	<h:outputScript library="webjars" name="jquery/2.1.4/jquery.min.js" />
+	<h:outputScript library="webjars"
+		name="bootstrap/3.3.6/js/bootstrap.min.js" />-->
+
+</ui:composition>
+

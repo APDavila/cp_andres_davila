@@ -1,0 +1,278 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Completa los datos de tu reserva</ui:define>
+
+	 
+	<ui:define name="content">
+		<ui:fragment rendered="#{completarDatosReservaController.conFbExtensions}">
+			<script>
+				(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) {
+						return;
+					}
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'Messenger'));
+			
+				function closeView() {
+					MessengerExtensions.requestCloseBrowser(function success() {
+						console.log(success)
+					}, function error(err) {
+						console.log(err)
+					});
+				}
+			</script>
+		</ui:fragment>
+		<ui:fragment rendered="#{!completarDatosReservaController.conFbExtensions}">
+			<script>
+				function closeView() {
+					window.close();
+				}
+			</script>
+		</ui:fragment>
+		
+		<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+			<f:facet name="default">
+
+			</f:facet>
+
+			<f:facet name="start">
+				 
+			</f:facet>
+
+			<f:facet name="complete">
+				 
+			</f:facet>
+		</p:ajaxStatus>
+
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage url="/images/ajaxloadingbar.gif"
+				value="/images/ajaxloadingbar.gif" name="/images/ajaxloadingbar.gif" />
+		</p:dialog>
+	
+		
+		<b:form id="formulario" horizontal="true" prependId="false">
+		<b:messages></b:messages>
+			<!--  <p:growl id="msgs"/> -->
+			<!--  <b:messages id="msgs"></b:messages>-->
+			<b:container>
+				<b:panel>
+					<h:panelGroup rendered="#{completarDatosReservaController.mostrarFormulario}">
+						<b:inputText placeholder="Nombres" label="Nombres" id="nombres" colMd="9" labelColMd="3"
+							value="#{completarDatosReservaController.nombresReserva}">
+							<f:facet name="prepend">
+								<b:icon name="user" />
+							</f:facet>
+					</b:inputText>
+					
+					<b:inputText placeholder="Apellidos" label="Apellidos" id="apellidos" colMd="9" labelColMd="3"
+							value="#{completarDatosReservaController.apellidosReserva}">
+							<f:facet name="prepend">
+								<b:icon name="user" />
+							</f:facet>
+					</b:inputText>
+					
+					<b:inputText placeholder="Email" label="Email" id="email" colMd="9" labelColMd="3"
+							value="#{completarDatosReservaController.emailReserva}">
+							<f:facet name="prepend">
+								<b:icon name="envelope" />
+							</f:facet>
+					</b:inputText>
+					
+					<b:inputText placeholder="Celular" label="Celular" id="telefono" colMd="9" labelColMd="3"
+							value="#{completarDatosReservaController.telefonoReserva}">
+							<f:facet name="prepend">
+								<b:icon name="phone" />
+							</f:facet>
+					</b:inputText>
+					
+						<b:selectOneMenu id="numeroPersonas" label="Número de personas" value="#{completarDatosReservaController.numeroPersonas}" colMd="9" labelColMd="3"
+						    >
+							<f:facet name="prepend">
+								<b:icon name="list" />
+							</f:facet>
+							<f:selectItem itemLabel="- Seleccione -" itemValue="" itemDisabled="false"></f:selectItem>
+							<f:selectItem itemLabel="1" itemValue="1"></f:selectItem>
+							<f:selectItem itemLabel="2" itemValue="2"></f:selectItem>
+							<f:selectItem itemLabel="3" itemValue="3"></f:selectItem>
+							<f:selectItem itemLabel="4" itemValue="4"></f:selectItem>
+							<f:selectItem itemLabel="5" itemValue="5"></f:selectItem>
+							<f:selectItem itemLabel="6" itemValue="6"></f:selectItem>
+							<f:selectItem itemLabel="7" itemValue="7"></f:selectItem>
+							<f:selectItem itemLabel="8" itemValue="8"></f:selectItem>
+							<f:selectItem itemLabel="9" itemValue="9"></f:selectItem>
+							<f:selectItem itemLabel="10" itemValue="10"></f:selectItem>
+							<f:selectItem itemLabel="11" itemValue="11"></f:selectItem>
+							<f:selectItem itemLabel="12" itemValue="12"></f:selectItem>
+							<f:selectItem itemLabel="13" itemValue="13"></f:selectItem>
+							<f:selectItem itemLabel="14" itemValue="14"></f:selectItem>
+							<f:selectItem itemLabel="15" itemValue="15"></f:selectItem>
+							<f:selectItem itemLabel="16" itemValue="16"></f:selectItem>
+							<f:selectItem itemLabel="17" itemValue="17"></f:selectItem>
+							<f:selectItem itemLabel="18" itemValue="18"></f:selectItem>
+							<f:selectItem itemLabel="19" itemValue="19"></f:selectItem>
+							<f:selectItem itemLabel="20" itemValue="20"></f:selectItem>
+						</b:selectOneMenu>
+						
+					<b:selectOneMenu id="smFechaDll" label="Fecha"
+						value="#{completarDatosReservaController.fechaString}" colMd="9" labelColMd="3"
+						>
+						<f:facet name="prepend">
+								<b:icon name="calendar" />
+							</f:facet>
+						<f:selectItem itemLabel="- Seleccione -" itemValue="" itemDisabled="false"></f:selectItem>
+						<f:selectItems value="#{completarDatosReservaController.listafechasReserva}"
+							var="fechasCombo" itemLabel="#{fechasCombo.nombreDia} #{fechasCombo.numeroDia} #{fechasCombo.nombreMes}"
+							itemValue="#{fechasCombo.numeroDia}/#{fechasCombo.numeroMes}/#{fechasCombo.numeroAnio}/#{fechasCombo.nombreDia}"></f:selectItems>
+						<f:ajax execute="smFechaDll" render="smHoraDll"
+							listener="#{completarDatosReservaController.obtenerHorariosRestaurante}" />
+
+					</b:selectOneMenu>
+
+					<b:selectOneMenu id="smHoraDll" label="Hora"
+						value="#{completarDatosReservaController.horaString}" colMd="9" labelColMd="3"
+						>
+						<f:facet name="prepend">
+								<b:icon name="time" />
+							</f:facet>
+						<f:selectItems value="#{completarDatosReservaController.listaHorariosRestaurantesTodos}"
+						></f:selectItems>
+					</b:selectOneMenu>
+					
+					
+					
+					<b:inputTextarea placeholder="Observaciones" label="Observaciones" id="observaciones" colMd="9" labelColMd="3"
+							value="#{completarDatosReservaController.observaciones}" rows="3">
+							<f:facet name="prepend">
+								<b:icon name="pencil" />
+							</f:facet>
+					</b:inputTextarea>
+					
+					<b:commandButton id="btnAceptar" value="Continuar" ajax="true" process="@form" look="primary btn-block"
+							
+							onclick="if (!esFormularioValido()) return false; ajax:completarDatosReservaController.completarDatosReserva();"
+							icon="floppy-disk" update="formulario" />
+							
+							<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js'></script>
+						<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+						<script src="#{resource['js:validadorRuc.js']}"></script>
+						<script src="#{resource['js:customValidators.js']}"></script>
+						<script src="#{resource['js:moment.js']}"></script>
+						<script src="#{resource['js:moment-with-locales.js']}"></script>
+						
+								<script type="text/javascript">
+					
+							$(document).ready(function() {
+								
+								$('#formulario').bootstrapValidator({
+
+									message : 'El valor ingresado es invalido',
+									fields : {
+										
+										
+										input_telefono : {
+											validators : {
+												notEmpty : {
+													message : 'Teléfono es requerido'
+												},
+												regexp : {
+													regexp : /^\d{10}$/i,
+													message : 'Teléfono invalido (10 dig)'
+												}
+											}
+										},
+										input_nombres : {
+											validators : {
+												notEmpty : {
+													message : 'Nombre es requerido'
+												},
+												stringLength : {
+													min : 1,
+													max : 200,
+													message : 'Maximo 200 caracteres'
+												}
+											}
+										},
+										input_apellidos : {
+											validators : {
+												notEmpty : {
+													message : 'Apellido es requerido'
+												},
+												stringLength : {
+													min : 1,
+													max : 200,
+													message : 'Maximo 200 caracteres'
+												}
+											}
+										},
+										input_email : {
+											validators : {
+												notEmpty : {
+													message : 'Correo electrónico es requerido'
+												},
+												emailAddress : {
+													message : 'Correo electrónico inválido'
+												}
+											}
+										},
+										numeroPersonasInner : {
+											validators : {
+												notEmpty : {
+													message : 'Número de personas es requerido'
+												}
+											}
+										},
+										input_observaciones : {
+											validators : {
+												stringLength : {
+													min : 0,
+													max : 200,
+													message : 'Maximo 200 caracteres'
+												}
+											}
+										},
+										smFechaDllInner : {
+											validators : {
+												notEmpty : {
+													message : 'Fecha es requerida'
+												}
+											}
+										}
+
+									}
+								// termina fields
+								}) // termina bootstrp validator
+							});// termina rmina ready
+
+							function esFormularioValido() {
+								var validator = $('#formulario').data('bootstrapValidator');
+								validator.validate();
+								return (validator.isValid());
+							}
+						
+						</script>
+					
+						</h:panelGroup>
+						
+						<h:panelGroup rendered="#{!completarDatosReservaController.mostrarFormulario}">
+						<b:button look="primary btn-block" onclick="closeView();" value="Continuar"  ></b:button>
+						</h:panelGroup>
+				</b:panel>
+			</b:container>
+		</b:form>
+	</ui:define>
+
+</ui:composition>

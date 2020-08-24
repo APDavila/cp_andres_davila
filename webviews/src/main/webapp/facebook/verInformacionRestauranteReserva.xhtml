@@ -1,0 +1,143 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Información Restaurante</ui:define>
+
+	 
+	<ui:define name="content">
+		<ui:fragment rendered="#{informacionRestauranteReservaController.conFbExtensions}">
+			<script>
+				(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) {
+						return;
+					}
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'Messenger'));
+			
+				function closeView() {
+					MessengerExtensions.requestCloseBrowser(function success() {
+						console.log(success)
+					}, function error(err) {
+						console.log(err)
+					});
+				}
+			</script>
+			<ui:fragment rendered="true">
+			<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsYVh4jkgxmtOwsg7IkrjmXtQxHQMQik4">
+		</script>
+          </ui:fragment>
+		</ui:fragment>
+		<ui:fragment rendered="#{!informacionRestauranteReservaController.conFbExtensions}">
+			<script>
+				function closeView() {
+					window.close();
+				}
+			</script>
+		</ui:fragment>
+		
+		<b:form id="formulario" horizontal="true" prependId="false">
+		<b:messages></b:messages>
+			<b:container>
+				<b:panel>
+					<h:panelGroup rendered="#{informacionRestauranteReservaController.mostrarFormulario}">
+						 	
+							<p:accordionPanel>
+				
+				<p:tab title="General">
+		            <h:panelGrid columns="1" cellpadding="10">
+		            <p:graphicImage id="image" rendered="true" cache="false" value="#{informacionRestauranteReservaController.restaurante.urlImagen}" style="width:100%" />
+		            	
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-tag"></i>
+		                    <h:outputText value="Nombre Restaurante" style="font-weight:bold"/>
+		      
+		                    </h:panelGrid>
+		                    
+		                    
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-tag" style="visibility: hidden;"></i>
+		                	<h:outputText style="text-align : justify;"
+		                    value="#{informacionRestauranteReservaController.restaurante.nombre}"/>
+		                   	</h:panelGrid>
+		                    
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-home"></i>
+		                    <h:outputText value="Dirección" style="font-weight:bold"/>
+		                    </h:panelGrid>
+		                   
+		                    
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-tag" style="visibility: hidden"></i>
+		                    <h:outputText style="text-align : justify;"
+		                    value="#{informacionRestauranteReservaController.restaurante.direccionSucursal}"/>
+		                    </h:panelGrid>
+		                    
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-contact"></i>
+		                    <h:outputText value="Teléfono" style="font-weight:bold"/>
+		                    </h:panelGrid>
+		                    
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-tag" style="visibility: hidden"></i>
+		                    <h:outputText style="text-align : justify;"
+		                    value="#{informacionRestauranteReservaController.restaurante.telefonoSucursal}"/>
+		                    </h:panelGrid>
+		                    
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-gear"></i>
+		                    <h:outputText value="Tipo de comida" style="font-weight:bold"/>
+		                    </h:panelGrid>
+		                    
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-tag" style="visibility: hidden"></i>
+		                    <h:outputText style="text-align : justify;"
+		                    value="#{informacionRestauranteReservaController.restaurante.categoria.nombre}"/>
+		                    </h:panelGrid>
+		                    
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-info"></i>
+		                    <h:outputText value="Información" style="font-weight:bold"/>
+		                    </h:panelGrid>
+		                    
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-tag" style="visibility: hidden"></i>
+		                    <h:outputText style="text-align : justify;"
+		                    value="#{informacionRestauranteReservaController.restaurante.descripcion}" align="justify"/>
+		                    </h:panelGrid>
+		                    
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-clipboard"></i>
+		                    <h:outputText value="Servicios" style="font-weight:bold"/>
+		                    </h:panelGrid>
+		                    
+		                    <h:panelGrid columns="2" cellpadding="10" style="text-align : justify;">
+		                    <i class="ui-icon ui-icon-tag" style="visibility: hidden"></i>
+		                    <h:outputText style="text-align : justify;"
+		                    value="#{informacionRestauranteReservaController.restaurante.serviciosSucursal}"/>
+		                    </h:panelGrid>
+		            </h:panelGrid>
+		        </p:tab>
+		         <p:tab title="Mapa de ubicación">
+		            <h:panelGrid columns="1" cellpadding="10">
+		                    <p:gmap center="#{informacionRestauranteReservaController.coordenadasCentrales}" zoom="16" type="ROADMAP"  style="width:270px;height:300px" model="#{informacionRestauranteReservaController.modelo}"/>
+		            </h:panelGrid>
+		        </p:tab>
+		        
+		       
+		    </p:accordionPanel>
+						</h:panelGroup>
+				</b:panel>
+			</b:container>
+		</b:form>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,111 @@
+<ui:composition template="/WEB-INF/templatePopUp/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+	<script>
+		function closeView() {
+			closeView1();
+			MessengerExtensions.requestCloseBrowser(function success() {
+				console.log(success)
+			}, function error(err) {
+				console.log(err)
+			});
+		}
+
+		function closeView1() {
+			window.close();
+		}
+	</script>
+	<ui:define name="titulo">
+	NUO E-commerce
+	</ui:define>
+	<ui:define name="content">
+<script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
+        <script src="auth.js"></script>
+        <script>
+window.fbAsyncInit = function() {
+    // FB JavaScript SDK configuration and setup
+    FB.init({
+      appId      : '2403743226315360',
+      cookie     : true,  // enable cookies to allow the server to access the session
+      xfbml      : true,  // parse social plugins on this page
+      version    : 'v4.0' // use graph api version 2.8
+    });
+    
+    // Check whether the user already logged in
+    FB.getLoginStatus(function(response) {
+    	alert(response.status);
+        if (response.status === 'connected') {
+            //display user data
+            getFbUserData();
+        }
+    });
+};
+
+// Load the JavaScript SDK asynchronously
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+// Facebook login with JavaScript SDK
+function fbLogin() {
+    FB.login(function (response) {
+        if (response.authResponse) {
+            // Get and display the user profile data
+            getFbUserData();
+        } else {
+            document.getElementById('status').innerHTML = 'User cancelled login or did not fully authorize.';
+        }
+    }, {scope: 'email'});
+}
+
+// Fetch the user profile data from facebook
+function getFbUserData(){
+    FB.api('/me', {locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender,locale,picture'},
+    function (response) {
+        document.getElementById('fbLink').setAttribute("onclick","fbLogout()");
+        document.getElementById('fbLink').innerHTML = 'Logout from Facebook';
+        document.getElementById('status').innerHTML = '<p>Thanks for logging in, ' + response.first_name + '!</p>';
+        document.getElementById('userData').innerHTML = '<h2>Facebook Profile Details</h2><p><img src="'+response.picture.data.url+'"/></p><p><b>FB ID:</b> '+response.id+'</p><p><b>Name:</b> '+response.first_name+' '+response.last_name+'</p><p><b>Email:</b> '+response.email+'</p><p><b>Gender:</b> '+response.gender+'</p><p><b>FB Profile:</b> <a target="_blank" href="'+response.link+'">click to view profile</a></p>';
+    });
+}
+
+// Logout from facebook
+function fbLogout() {
+    FB.logout(function() {
+        document.getElementById('fbLink').setAttribute("onclick","fbLogin()");
+        document.getElementById('fbLink').innerHTML = '<img src="images/fb-login-btn.png"/>';
+        document.getElementById('userData').innerHTML = '';
+        document.getElementById('status').innerHTML = '<p>You have successfully logout from Facebook.</p>';
+    });
+}
+</script>
+
+		<h:form id="form">
+			<p:ajaxStatus onstart="PF('statusDialog').show()"
+				onsuccess="PF('statusDialog').hide()" />
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false">
+				<p:graphicImage url="/images/ajax-loader.gif"
+				value="/images/ajax-loader.gif" name="/images/ajax-loader.gif" />
+			</p:dialog>
+			<p:growl id="msgs" showDetail="true" />
+			<img src="#{ecommerceController.urlEcommerce}" style="margin-top: 9.5%;" width="100%" height="50%" />
+			<img src="#{ecommerceController.usuarioSeleccionado.urlFotoPerfil}" class="imgRedonda" />
+			<p:commandButton value="Iniciar Sesión" action="#{ecommerceController.iniciarFacebook}" />
+			<div class="fb-login-button"/>
+        
+		</h:form>
+	</ui:define>
+	<ui:define name="footer">
+		<p:panel>
+			<div style="text-align: center">Hola-Lola</div>
+		</p:panel>
+	</ui:define>
+</ui:composition>

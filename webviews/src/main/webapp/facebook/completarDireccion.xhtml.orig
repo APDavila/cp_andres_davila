@@ -1,0 +1,335 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:b="http://bootsfaces.net/ui">
+
+	<ui:define name="titulo">Completa tu direccion de entrega</ui:define>
+
+
+	<ui:define name="content">
+
+		<b:form id="formulario" horizontal="true" prependId="false">
+			<b:container>
+				<div class="well">
+					<h:panelGroup rendered="#{completarDireccionController.mostrarFormulario}">
+
+						<b:inputText placeholder="Username" required="true" label="Username" colMd="9" labelColMd="3">
+							<f:facet name="prepend">
+								<b:icon name="user" />
+							</f:facet>
+						</b:inputText>
+
+
+						<b:row rendered="#{completarDireccionController.solicitarNombres}">
+							<b:column medium-screen="4">
+								<h:outputLabel value="Tus nombres" for="nombres" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:inputText placeholder="Tus Nombres" id="nombres"
+									value="#{completarDireccionController.ubicacionUsuario.usuario.nombres}">
+									<f:facet name="prepend">
+										<b:icon name="user" />
+									</f:facet>
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row rendered="#{completarDireccionController.solicitarApellidos}">
+							<b:column medium-screen="4">
+								<h:outputLabel value="Tus apellidos" for="apellidos" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:inputText placeholder="Tus apellidos" id="apellidos"
+									value="#{completarDireccionController.ubicacionUsuario.usuario.apellidos}">
+									<f:facet name="prepend">
+										<b:icon name="user" />
+									</f:facet>
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row rendered="#{completarDireccionController.solicitarEmail}">
+							<b:column medium-screen="4">
+								<h:outputLabel value="Correo electronico" for="email" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:inputText placeholder="Correo electronico" id="email"
+									value="#{completarDireccionController.ubicacionUsuario.usuario.email}">
+									<f:facet name="prepend">
+										<b:icon name="envelope" />
+									</f:facet>
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row rendered="#{completarDireccionController.solicitarTipoIdentificacion}">
+							<b:column medium-screen="4">
+								<h:outputLabel value="Tipo de Identificacion" for="tipoIdentificacion" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:selectOneMenu id="tipoIdentificacion"
+									value="#{completarDireccionController.ubicacionUsuario.usuario.tipoIdentificacion}">
+									<f:facet name="prepend">
+										<b:icon name="list" />
+									</f:facet>
+									<f:selectItem itemLabel="- Seleccione -" itemValue=""></f:selectItem>
+									<f:selectItem itemLabel="CEDULA" itemValue="C"></f:selectItem>
+									<f:selectItem itemLabel="RUC" itemValue="R"></f:selectItem>
+									<f:selectItem itemLabel="PASAPORTE" itemValue="P"></f:selectItem>
+								</b:selectOneMenu>
+							</b:column>
+						</b:row>
+						<b:row rendered="#{completarDireccionController.solicitarNumeroIdentificacion}">
+							<b:column medium-screen="4">
+								<h:outputLabel value="Numero de Identificacion" for="numeroIdentificacion" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:inputText placeholder="Numero de RUC/Cedula/Pasaporte" id="numeroIdentificacion"
+									value="#{completarDireccionController.ubicacionUsuario.usuario.numeroIdentificacion}">
+									<f:facet name="prepend">
+										<b:icon name="credit-card" />
+									</f:facet>
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column medium-screen="4">
+								<h:outputLabel value="Calle principal" for="callePrincipal" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:inputText placeholder="#{completarDireccionController.ubicacionUsuario.callePrincipalCalculada}"
+									id="callePrincipal" value="#{completarDireccionController.ubicacionUsuario.callePrincipal}">
+									<f:facet name="prepend">
+										<b:icon name="home" />
+									</f:facet>
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column medium-screen="4">
+								<h:outputLabel value="Calle secundaria" for="calleSecundaria" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:inputText placeholder="Calle secundaria" id="calleSecundaria"
+									value="#{completarDireccionController.ubicacionUsuario.calleSecundaria}">
+									<f:facet name="prepend">
+										<b:icon name="road" />
+									</f:facet>
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column medium-screen="4">
+								<h:outputLabel value="Numeracion" for="numeracion" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:inputText placeholder="Numeracion" id="numeracion"
+									value="#{completarDireccionController.ubicacionUsuario.numeracion}">
+									<f:facet name="prepend">
+										<b:icon name="bookmark" />
+									</f:facet>
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column medium-screen="4">
+								<h:outputLabel value="Telefono" for="telefono" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:inputText placeholder="Telefono" id="telefono"
+									value="#{completarDireccionController.ubicacionUsuario.telefono}">
+									<f:facet name="prepend">
+										<b:icon name="earphone" />
+									</f:facet>
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column medium-screen="4">
+								<h:outputLabel value="Celular" for="celular" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:inputText placeholder="Celular" id="celular" value="#{completarDireccionController.ubicacionUsuario.celular}">
+									<f:facet name="prepend">
+										<b:icon name="earphone" />
+									</f:facet>
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column medium-screen="4">
+								<h:outputLabel value="Referencia" for="referencia" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:inputTextarea placeholder="Referencia" id="referencia"
+									value="#{completarDireccionController.ubicacionUsuario.referenciaUbicacion}">
+									<f:facet name="prepend">
+										<b:icon name="pencil" />
+									</f:facet>
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column medium-screen="4">
+								<h:outputLabel value="Es tu direccion principal" for="esPrincipal" />
+							</b:column>
+							<b:column medium-screen="8">
+								<b:selectOneMenu id="esPrincipal" value="#{completarDireccionController.ubicacionUsuario.esPrincipal}">
+									<f:facet name="prepend">
+										<b:icon name="list" />
+									</f:facet>
+									<f:selectItem itemLabel="- Seleccione -" itemValue=""></f:selectItem>
+									<f:selectItem itemLabel="Si" itemValue="true"></f:selectItem>
+									<f:selectItem itemLabel="No" itemValue="false"></f:selectItem>
+								</b:selectOneMenu>
+							</b:column>
+						</b:row>
+						<b:commandButton id="btnAceptar" value=" Continuar" ajax="true" process="@form" look="primary btn-block"
+							onclick="if (!esFormularioValido()) return false; ajax:completarDireccionController.completarUbicacion();"
+							icon="floppy-disk" update="formulario" />
+
+
+						<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js'></script>
+						<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+						<script src="#{resource['js:validadorRuc.js']}"></script>
+						<script src="#{resource['js:customValidators.js']}"></script>
+
+						<script type="text/javascript">
+							$(document).ready(function() {
+								$('#formulario').bootstrapValidator({
+
+									message : 'El valor ingresado es invalido',
+									fields : {
+										input_email : {
+											validators : {
+												notEmpty : {
+													message : 'Correo electronico es requerido'
+												},
+												emailAddress : {
+													message : 'Correo electronico invalido'
+												}
+											}
+										},
+										tipoIdentificacionInner : {
+											validators : {
+												notEmpty : {
+													message : 'Tipo de Identificacion es requerido'
+												},
+												tipoDocumento : {
+													field : 'input_numeroIdentificacion',
+													message : 'Tipo de identificacion no coincide con valor ingresado'
+												}
+
+											}
+										},
+										input_numeroIdentificacion : {
+											validators : {
+												notEmpty : {
+													message : 'Numero de Cedula/RUC/Pasaporte es requerido'
+												},
+												numeroDocumento : {
+													field : 'tipoIdentificacionInner',
+													message : 'Numero de Identificacion no coincide con tipo de documento'
+												}
+											}
+										},
+										input_nombres : {
+											validators : {
+												notEmpty : {
+													message : 'Nombres son requeridos'
+												}
+											}
+										},
+										input_apellidos : {
+											validators : {
+												notEmpty : {
+													message : 'Apellidos son requeridos'
+												}
+											}
+										},
+										input_callePrincipal : {
+											validators : {
+												stringLength : {
+													min : 2,
+													message : 'Se requiere por lo menos dos caracteres'
+												},
+												notEmpty : {
+													message : 'Calle principal es requerido'
+												}
+											}
+										},
+										input_calleSecundaria : {
+											validators : {
+												stringLength : {
+													min : 2,
+												}
+											}
+										},
+										input_numeracion : {
+											validators : {
+												stringLength : {
+													min : 2,
+												},
+												notEmpty : {
+													message : 'Numeracion es requerido'
+												}
+											}
+										},
+										input_telefono : {
+											validators : {
+												notEmpty : {
+													message : 'Telefono fijo es requerido'
+												},
+												regexp : {
+													regexp : /^\d{7}$/i,
+													message : 'Telefono invalido'
+												}
+											}
+										},
+										input_celular : {
+											validators : {
+												notEmpty : {
+													message : 'Celular requerido'
+												},
+												regexp : {
+													regexp : /^\d{10}$/i,
+													message : 'Numero Celular invalido'
+												}
+											}
+										},
+										input_referencia : {
+											validators : {
+												stringLength : {
+													min : 0,
+													max : 200,
+													message : 'Maximo 200 caracteres'
+												}
+											}
+										},
+										esPrincipalInner : {
+											validators : {
+												notEmpty : {
+													message : 'Es tu direccion principal?'
+												}
+											}
+										}
+
+									}
+								// termina fields
+								}) // termina bootstrp validator
+							});// termina rmina ready
+
+							function esFormularioValido() {
+								var validator = $('#formulario').data('bootstrapValidator');
+								validator.validate();
+								return (validator.isValid());
+							}
+						</script>
+					</h:panelGroup>
+
+					<h:panelGroup rendered="#{!completarDireccionController.mostrarFormulario}">
+						<b:messages></b:messages>
+						<b:button look="primary btn-block" onclick="window.close();" value="Continuar"></b:button>
+					</h:panelGroup>
+				</div>
+			</b:container>
+		</b:form>
+	</ui:define>
+
+</ui:composition>

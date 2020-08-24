@@ -1,0 +1,157 @@
+<ui:composition template="/WEB-INF/template/facebook.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+	<ui:define name="head">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+
+		<link href='https://fonts.googleapis.com/css?family=Lato:400,700'
+			rel='stylesheet' type='text/css' />
+		<link rel="stylesheet" type="text/css"
+			href="jQuery-Seat-Charts/jquery.seat-charts.css" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	</ui:define>
+
+	<ui:define name="titulo">Procesar Pago</ui:define>
+
+	<ui:define name="content">
+	
+	    <ui:fragment>
+			<script>
+			(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) {
+					return;
+				}
+				js = d.createElement(s);
+				js.id = id;
+				js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'Messenger'));
+			
+					function closeView() {
+						window.close();
+					MessengerExtensions.requestCloseBrowser(function success() {
+						console.log(success)
+					}, function error(err) {
+						console.log(err)
+					});
+				}
+			</script>
+		</ui:fragment>
+		
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage url="/images/ajaxloadingbar.gif"
+				value="/images/ajaxloadingbar.gif" name="/images/ajaxloadingbar.gif" />
+		</p:dialog>
+
+		<h:form id="formulario" prependId="false">
+			<p:growl id="msgs" life="10000"/>
+			<b:container>
+			<div style="overflow-y: auto;">
+				<b:panel look="primary">
+					<h:panelGroup>
+						<b:row>
+							<b:column>
+								<div class="booking-details ui-fluid"
+									style="margin-left: 0px !important;">
+
+									<h:panelGrid id="pnGrid" columns="3" rendered="#{pagoController.ab_verPago}"
+										border = "0"
+      									cellpadding = "10" cellspacing = "1" 
+      									style="border-collapse: separate !important;  border-spacing:  5px !important;"
+										styleClass="ui-panelgrid-blank">
+										<f:facet name="header">
+											<h:outputText value="Procesar Pago" />
+										</f:facet>
+										
+										<h:outputText value="C.I.:"/>
+							            <p:inputText id="intCIDenoTarjeta" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" autocomplete="off" 
+											value="#{pagoController.ciDuenioTarjeta}" maxlength="10" onkeypress="if(event.which &lt; 48 || event.which &gt; 57 ) if(event.which != 8) return false;"  />
+										<p:watermark for="intCIDenoTarjeta" value="1233645875" id="watermark21" />
+										
+										<h:outputText value="Titular de la Tarjeta:"/>
+							            <p:inputText id="intDenoTarjeta" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" autocomplete="off" 
+											value="#{pagoController.duenioTarjeta}" maxlength="200" />
+										<p:watermark for="intDenoTarjeta" value="Nombre del Titular" id="watermark22" />
+
+										<h:outputText value="Tarjeta" rendered="#{pagoController.ab_verComboPagos}" />
+										<p:selectOneMenu id="city" value="#{pagoController.tarjeta}" rendered="#{pagoController.ab_verComboPagos}">
+										    <p:ajax listener="#{pagoController.onTarjetaChange}" update="intTarjeta inpFechaExpiracion inpCVV" />
+							                <f:selectItem itemLabel="Nueva Tarjeta" itemValue="" noSelectionOption="true" />
+							                <f:selectItems value="#{pagoController.tarjetas}" />
+							            </p:selectOneMenu>
+							            <h:outputText value="" rendered="#{pagoController.ab_verComboPagos}" />
+							            
+							            <h:outputText value="Tarjeta:"/>
+							            <p:inputText id="intTarjeta" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" autocomplete="off" 
+							                readonly="#{!pagoController.ab_ingresaTarjeta}"
+											value="#{pagoController.tarjetaEscrita}" maxlength="19" onkeypress="if(event.which &lt; 48 || event.which &gt; 57 ) if(event.which != 8) return false;"  />
+										<p:watermark for="intTarjeta" value="1234 5678 9012 3456" id="watermark2" />
+										
+										<h:outputText value="CVV:"/>
+							            <p:inputText id="inpCVV" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" maxlength="3" autocomplete="off"
+											value="#{pagoController.ls_cvv}" />
+										<p:watermark for="inpCVV" value="CVV" id="watermark3" />
+										 
+											
+										<h:outputText value="Fecha Vencimiento:"/>
+							            <p:inputText id="inpFechaExpiracion" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" maxlength="7" autocomplete="off"
+											value="#{pagoController.ls_fechaExpiracion}" />
+										<p:watermark for="inpFechaExpiracion" value="MM/YYYY" id="watermark1" />
+										
+										<h:outputText value="E-mail:"/>
+							            <p:inputText id="intemailTarjeta" style="text-align: justify !important; font-weight: bold !important; width: 100% !important;" autocomplete="off" 
+											value="#{pagoController.email}" maxlength="100"   />
+										<p:watermark for="intemailTarjeta" value="ejemplo@hotmail.com" id="watermark23" />
+											
+															
+										<p:selectBooleanCheckbox style="float: right; !important;"
+											value="#{pagoController.ab_guardaTarjeta}" />
+										<h:outputText value="¿Quieres que guardemos este medio de pago para que no tengas que ingresarlo nuevamente?"/>
+										<h:outputText value=""/>
+										
+									</h:panelGrid>
+
+					
+
+									<div style="text-align: center;" class="ui-fluid">
+										<hr style="color:white ;" />
+																			
+										<p:commandButton id="bntGuardar" value="Procesar"
+												look="primary btn-block"
+												actionListener="#{pagoController.procesarPago}" update="bntSalir1 msgs pnGrid bntGuardar"
+												rendered="#{pagoController.ab_verPago}"
+												styleClass="button ui-priority-primary"
+												style="border: 1px solid #1f89ce; color: #fff; background: #2399e5;" />
+
+										<h:commandButton id="bntSalir1" value="Listo" styleClass="button"  rendered="#{pagoController.ab_noVerPago}"
+											onclick="closeView();">
+										</h:commandButton>
+
+									</div>
+
+								</div>
+
+							</b:column>
+						</b:row>
+
+
+						<script src="jQuery-Seat-Charts/jquery.seat-charts.min.js"></script>
+						<script src="jQuery-Seat-Charts/jquery.countdown.min.js"></script>
+					</h:panelGroup>
+				</b:panel>
+			</div>
+			</b:container>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

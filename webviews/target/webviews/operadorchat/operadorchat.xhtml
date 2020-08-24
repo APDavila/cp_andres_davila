@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+	<title>Hola Lola</title>
+	<ui:insert name="head" />
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<link
+    href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300,700'
+    rel='stylesheet' type='text/css'></link>
+<link href="style/style.css" type="text/css" rel='stylesheet' />
+<script type="text/javascript" src="js/main.js"></script>
+
+</h:head>
+
+<h:body styleClass="PaleBlueBG">
+
+	<div class="body_container">
+ 
+        <div id="header">
+            <h1>Chat Hola Lola</h1>
+        </div>
+ 
+ 		
+ 		
+        <div id="message_container" class="box_shadow">
+ 
+            <ul id="messages" style="list-style-image: url('images/alarm.png');">
+            </ul>
+ 
+ 
+            <div id="input_message_container">
+                <form id="form_send_message" method="post" action="#">
+                    <input type="text" id="input_message"
+                        placeholder="Ingresa tu mensaje aquí..." /> <input type="submit"
+                        id="btn_send" onclick="send();" value="Enviar" />
+                    <div class="clear"></div>
+                </form>
+            </div>
+            <div>
+ 
+                <input type="button" onclick="closeSocket();"
+                    value="Salir de la sala de chat" id="btn_close" />
+            </div>
+ 			
+        </div>
+
+    </div>
+</h:body>
+
+</html>

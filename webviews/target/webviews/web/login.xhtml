@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	</f:facet>
+	<title>Hola Lola</title>
+	<ui:insert name="head" />
+</h:head>
+
+<h:body styleClass="PaleBlueBG">
+
+	<div class="Wid100 GreenBanner" style="height: 20rem;"></div>
+
+	<div class="Wid80 MarAuto" style="margin-top: -20rem;">
+		<div class="Wid70 MarAuto WidAutoOnMobile TexAlCenter" align="center">
+
+			<div class="Wid70 MarAuto WidAutoOnMobile" align="center">
+				<div class="EmptyBox30"></div>
+				<div class="Container100 TexAlCenter Heading1 Fs50 "
+					style="margin-top: -20px;">
+					<IMG alt="Hola Lola"
+						src="https://lola.nuo.com.ec/images/hl_images/holalola/lolalogo.png"
+						style="width: 25%;" />
+				</div>
+
+				<div class="EmptyBox30"></div> 
+				<div class="Card ui-fluid ShadowEffect" style="margin-top: -50px; width: 70%" >
+					<div class="Wid100 FontLatoRegular Leaden Fs18"
+						style="margin: 2rem 0px;">Bienvenido</div>
+
+					<h:form>
+						<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+						<div align="center" style="width: 100%">
+							<h:panelGrid columns="1" cellpadding="5" width="80%">
+								<p:inputText id="username"
+									value="#{ingresoController.username}" required="true"
+									placeholder="Usuario" />
+
+								<p:password id="password"
+									value="#{ingresoController.password}" required="true"
+									placeholder="Clave" />
+
+								<f:facet name="footer">
+									<p:commandButton value="Ingresar" update="growl"
+										actionListener="#{ingresoController.login}" />
+								</f:facet>
+							</h:panelGrid>
+						</div>
+					</h:form>
+
+					<div class="EmptyBox10"></div>
+				</div>
+
+				<div class="EmptyBox20"></div>
+				<div class="Wid100 FontLatoRegular Fs12 TransparentWhite">
+					<i class="fa fa-copyright DispInlBlock"></i> Hola Lola <br />Todos
+					los derechos reservados.
+				</div>
+				<div class="EmptyBox30"></div>
+
+			</div>
+		</div>
+	</div>
+
+	<style>
+.ui-button-text, .ui-button-text-only .ui-button-text {
+	padding: 15px !important;
+	transition: none !important;
+}
+</style>
+
+	<h:outputStylesheet name="css/core-layout.css" library="venture-layout" />
+	<h:outputStylesheet name="css/font-awesome.css"
+		library="venture-layout" />
+	<h:outputStylesheet name="css/animate.css" library="venture-layout" />
+	<h:outputStylesheet name="css/venture-layout.css"
+		library="venture-layout" />
+	<h:outputStylesheet name="css/venture-font.css"
+		library="venture-layout" />
+</h:body>
+
+</html>

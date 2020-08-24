@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            Prueba Pago
+            <br />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+            <script>
+                function encrypt() {
+                    	var datos = {
+				cardNumber : "4111111111111111",
+				expirationMonth : "05",
+				expirationYear : "2022",
+				holderName : "Andres Davila",
+				securityCode : "123"
+			};
+			var key = CryptoJS.enc.Utf8
+					.parse('a51e5bdf562c4ac1b89f1ac5bc2e7047');
+			var iv = CryptoJS.enc.Utf8.parse('');
+			var encrypted = CryptoJS.AES.encrypt(JSON.stringify(datos), key, {
+				iv : iv
+			});
+
+			var codificado = encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+                     myRemote([
+                        { name: 'variable',  value: codificado}]);
+                    
+                }
+            </script>
+            <br/>
+            <h:outputText id="a" value="encrypt();" />
+                            
+            <p:remoteCommand name="myRemote" partialSubmit="true" process="@this"  action="#{testPagoController.recuperarValor}"/>
+            <br/>
+            ddd
+            <p:commandButton onclick="encrypt();" value="Continuar" ></p:commandButton>
+        </h:form>
+    </h:body>
+</html>
+

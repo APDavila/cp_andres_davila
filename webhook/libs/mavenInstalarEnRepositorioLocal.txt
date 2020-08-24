@@ -1,0 +1,3 @@
+
+mvn install:install-file -Dfile=PayphoneTransactionApi.jar -Dpackaging=jar -DgroupId=com.payphone -DartifactId=PayphoneTransactionApi -Dversion=1.0
+

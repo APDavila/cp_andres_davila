@@ -1,0 +1,129 @@
+body {
+    padding-top: 21px !important;
+    padding-bottom: 20px !important;
+}
+
+
+.ui-menu {
+    background: transparent !important;
+   color:rgba(255, 255, 255, 0.5) ;
+    border: 0 !important;
+}
+
+.ui-menu.ui-menu-dynamic {
+    position: absolute !important;
+    display: none !important;
+    z-index: 100000 !important;   
+}
+
+.ui-menu-list {
+     background: #303030 !important;
+}
+
+.ui-menu .ui-menu-list .ui-menuitem {
+    border:none !important;
+    background: #303030 !important;
+   color:rgba(255, 255, 255, 0.5);
+    
+}
+
+.ui-menu .ui-menuitem {
+    
+   color:rgba(255, 255, 255, 0.5);
+    
+}
+
+.ui-menu .ui-menuitem-text {
+    float:left !important;
+    
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus
+{
+    border:none !important;
+    background: #303030 !important;
+    color:white !important;
+    
+}
+
+.ui-widget-content a
+{
+	 color:rgba(255, 255, 255, 0.5);
+}
+
+.ui-menu.ui-widget a
+{
+	 color:rgba(255, 255, 255, 0.5);
+}
+
+
+.ui-inputswitch
+{
+	height: 35px;
+	top: 9px;
+}
+
+.ui-inputswitch .ui-inputswitch-on 
+{
+	height: 35px !important;
+}
+
+.ui-inputswitch .ui-inputswitch-off
+{
+	height: 35px !important;
+}
+
+.ui-inputswitch .ui-inputswitch-handle
+{
+	height: 35px !important;
+}
+
+ .ui-growl{ 
+       top:60px; 
+} 
+
+.ui-datatable tbody td
+{
+	border-style: hidden !important;
+	padding: 0px 10px !important;
+	font-size: small !important;
+}
+
+.ui-datatable tbody td
+{
+	border-style: hidden !important;
+	padding: 0px 10px !important;
+	font-size: small !important;
+}
+
+.franjaTitulo
+{
+	background-image: -moz-linear-gradient(277deg, #1b81d7 0%, #1f4869 100%);
+
+background-image: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #1b81d7), color-stop(100%, #1f4869));
+
+background-image: -webkit-linear-gradient(277deg, #1b81d7 0%, #1f4869 100%);
+
+background-image: -o-linear-gradient(277deg, #1b81d7 0%, #1f4869 100%);
+
+background-image: -ms-linear-gradient(277deg, #1b81d7 0%, #1f4869 100%);
+
+background-image: linear-gradient(277deg, #1b81d7 0%, #1f4869 100%);
+
+filter: progid:DXImageTransform.Microsoft.gradient( endColorstr='#1b81d7', startColorstr='#1f4869',GradientType=1 );
+
+height: auto;
+
+padding: 11px;
+
+color: #C1D5D5;
+
+border-radius: 0px 0px 10px 10px;
+}
+
+/*
+.ui-datatable thead th
+{
+	height: 45px !important;
+}
+*/
