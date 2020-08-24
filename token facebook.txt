@@ -1,0 +1,20 @@
+EAAFTZAtHq8kIBADdReP40ZAIDEiLSGORjujZBoSZAh6xzlJgPbBZBt5JGVQ4TLtbEZAih36zqQ9TWJ2JRsz2fWIyNw5VNXyL40fMjZCkpOK2nybfuk3N1l1T9BZAAEGB8yZAEhvAtAPZBlZAIl5cH8RVAjrYw9Bc1bmTR3CfQZBL5W9R9gZDZD
+ngrok.exe http 8080
+
+
+
+Dialog flow
+https://bots.dialogflow.com/facebook/c4ef05db-c5e3-4b84-8d85-af0fe80c74b2/webhook
+frase
+probandoWebHooks
+
+standalone.bat -Djboss.server.base.dir=D:\wildfly-11.0.0.Final\standaloneCP\ 
+
+Credenciales Facebook
+0999910156
+monito0503535320
+
+
+credenciales gmail
+componente.practico.uisrael@gmail.com
+monito0503535320
